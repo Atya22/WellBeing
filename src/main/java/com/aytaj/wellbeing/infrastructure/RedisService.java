@@ -1,8 +1,7 @@
-package com.aytaj.wellbeing.service.Impl;
+package com.aytaj.wellbeing.infrastructure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.concurrent.TimeUnit;

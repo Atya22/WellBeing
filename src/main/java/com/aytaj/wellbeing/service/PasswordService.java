@@ -1,6 +1,6 @@
 package com.aytaj.wellbeing.service;
 
-public interface PasswordInterface {
+public interface PasswordService {
     void initiatePasswordReset(String email);
 
     boolean resetPassword(String token, String newPassword);

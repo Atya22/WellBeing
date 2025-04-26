@@ -1,6 +1,5 @@
-package com.aytaj.wellbeing.service.Impl;
+package com.aytaj.wellbeing.infrastructure;
 
-import com.aytaj.wellbeing.service.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
@@ -10,10 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmailServiceImpl implements EmailService {
+public class EmailService {
     private final JavaMailSenderImpl mailSender;
 
-    @Override
     public void sendEmail(String email, String subject, String body) {
         try {
             var msg = mailSender.createMimeMessage();

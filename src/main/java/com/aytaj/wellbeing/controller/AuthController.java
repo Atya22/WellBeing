@@ -17,22 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-//    private final ClientService clientService;
 
-//    @PostMapping("/login")
-
-//    @PostMapping("/registration/client/")
-//    public ResponseEntity<?> registerClient(@RequestBody ClientRegisterRequest request) {
-//        return ResponseEntity.ok(clientService.register(request));
-//    }
-
-    @PostMapping("/registration/client/sendOtp")
-    public void registerClient(@Valid @RequestBody RegistrationOtpDto email) {
+    @PostMapping("/registration/client/otp-request")
+    public void requestClientOtp(@Valid @RequestBody RegistrationOtpDto email) {
         authService.sendOtpRegistration(email);
     }
 
-    @PostMapping("/registration/client/verify")
-    public void addClient(@Valid @RequestBody ClientRegisterRequest request) {
+    @PostMapping("/registration/client/otp-verification")
+    public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegisterRequest request) {
         authService.registerUser(request);
     }
 

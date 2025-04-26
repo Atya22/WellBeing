@@ -1,7 +1,9 @@
 package com.aytaj.wellbeing.service.Impl;
 
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
+import com.aytaj.wellbeing.infrastructure.EmailService;
 import com.aytaj.wellbeing.service.OtpService;
+import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.util.enums.Purpose;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class OtpServiceImpl implements OtpService {
     private final RedisService redisService;
-    private final EmailServiceImpl emailService;
+    private final EmailService emailService;
     private static final long OTP_EXPIRATION_MINUTES = 5;
 
     @Override
