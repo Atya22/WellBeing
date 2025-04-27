@@ -3,10 +3,11 @@ package com.aytaj.wellbeing.service;
 import com.aytaj.wellbeing.dto.ClientRegisterRequest;
 import com.aytaj.wellbeing.dto.RegisterRequest;
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
+import com.aytaj.wellbeing.dto.UserLoginDto;
 
 public interface AuthService {
 
-    String login(String email, String password);
+    String login (UserLoginDto dto);
 
     void logout(String token);
 

@@ -13,10 +13,12 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
-    public static String generateToken(String subject, long expirationMillis, Map<String, Object> claims) throws Exception {
+    public String generateToken(String subject, Long id,  long expirationMillis, Map<String, Object> claims) throws Exception {
+        claims.put("id", id);
         JWSSigner signer = new RSASSASigner(loadPrivateKey());
         JWTClaimsSet.Builder claimSet = new JWTClaimsSet.Builder()
                 .subject(subject)
+                .issueTime(new Date(System.currentTimeMillis()))
                 .expirationTime(new Date(System.currentTimeMillis() + expirationMillis));
 
 

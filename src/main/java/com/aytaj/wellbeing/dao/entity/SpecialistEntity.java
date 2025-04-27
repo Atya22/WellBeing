@@ -1,5 +1,6 @@
 package com.aytaj.wellbeing.dao.entity;
 
+import com.aytaj.wellbeing.service.LoginUser;
 import com.aytaj.wellbeing.util.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpecialistEntity {
+public class SpecialistEntity implements LoginUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

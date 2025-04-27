@@ -1,20 +1,18 @@
 package com.aytaj.wellbeing.service.Impl;
 
-import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
-import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
-import com.aytaj.wellbeing.dto.ClientRegisterRequest;
 import com.aytaj.wellbeing.dto.SpecialistRegisterRequest;
-import com.aytaj.wellbeing.mapper.ClientMapper;
 import com.aytaj.wellbeing.mapper.SpecialistMapper;
-import com.aytaj.wellbeing.service.UserRegisterHandler;
+import com.aytaj.wellbeing.service.UserHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 @Component
-public class SpecialistRegisterHandler implements UserRegisterHandler<SpecialistRegisterRequest, SpecialistEntity> {
+public class SpecialistHandler implements UserHandler<SpecialistRegisterRequest, SpecialistEntity> {
 
     private final SpecialistRepository specialistRepository;
     private final SpecialistMapper specialistMapper;
@@ -22,6 +20,11 @@ public class SpecialistRegisterHandler implements UserRegisterHandler<Specialist
     @Override
     public boolean existsByEmail(String email) {
         return specialistRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public Optional<SpecialistEntity> findByEmail(String email) {
+        return specialistRepository.findByEmail(email);
     }
 
     @Override

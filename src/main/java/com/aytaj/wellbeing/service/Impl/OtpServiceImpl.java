@@ -1,6 +1,7 @@
 package com.aytaj.wellbeing.service.Impl;
 
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
+import com.aytaj.wellbeing.exception.InvalidOtpException;
 import com.aytaj.wellbeing.infrastructure.EmailService;
 import com.aytaj.wellbeing.service.OtpService;
 import com.aytaj.wellbeing.infrastructure.RedisService;
@@ -39,8 +40,13 @@ public class OtpServiceImpl implements OtpService {
     public boolean verifyOtp(String email, Purpose purpose, String otp) {
         String key = email + purpose;
         String storedOtp = redisService.get(key);
-        var isEqual = otp.equals(storedOtp);
+        if (storedOtp == null) {
+            throw new InvalidOtpException("OTP expired or not found. Please request a new one.");
+        }
+        if (!otp.equals(storedOtp)) {
+            throw new InvalidOtpException("Invalid OTP. Please check the code and try again.");
+        }
         redisService.delete(email);
-        return isEqual;
+        return true;
     }
 }

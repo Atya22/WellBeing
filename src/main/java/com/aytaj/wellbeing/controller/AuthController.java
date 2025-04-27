@@ -3,6 +3,7 @@ package com.aytaj.wellbeing.controller;
 
 import com.aytaj.wellbeing.dto.ClientRegisterRequest;
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
+import com.aytaj.wellbeing.dto.UserLoginDto;
 import com.aytaj.wellbeing.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,11 @@ public class AuthController {
     @PostMapping("/registration/client/otp-verification")
     public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegisterRequest request) {
         authService.registerUser(request);
+    }
+
+    @PostMapping("/login")
+    public void loginUser(@Valid @RequestBody UserLoginDto request){
+        authService.login(request);
     }
 
 //    @PostMapping("/registration/specialist/")

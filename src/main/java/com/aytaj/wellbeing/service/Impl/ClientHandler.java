@@ -4,19 +4,27 @@ import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dto.ClientRegisterRequest;
 import com.aytaj.wellbeing.mapper.ClientMapper;
-import com.aytaj.wellbeing.service.UserRegisterHandler;
+import com.aytaj.wellbeing.service.UserHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 @AllArgsConstructor
-public class ClientRegisterHandler implements UserRegisterHandler<ClientRegisterRequest, ClientEntity> {
+public class ClientHandler implements UserHandler<ClientRegisterRequest, ClientEntity> {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
 
     @Override
     public boolean existsByEmail(String email) {
+
         return clientRepository.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public Optional<ClientEntity> findByEmail(String email) {
+        return clientRepository.findByEmail(email);
     }
 
     @Override
