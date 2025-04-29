@@ -89,14 +89,6 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    public String takeTokenFromHeader(String authHeader) {
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new InvalidTokenException("Authorization header must start with Bearer");
-        }
-        return authHeader.substring(7);
-    }
-
-
     public TokenResponse refreshToken(String refreshToken) {
         try {
             SignedJWT jwt = SignedJWT.parse(refreshToken);

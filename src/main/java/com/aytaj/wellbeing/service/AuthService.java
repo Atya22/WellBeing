@@ -16,5 +16,4 @@ public interface AuthService {
 
     void logout(String token);
 
-    String takeTokenFromHeader(String authHeader);
 }

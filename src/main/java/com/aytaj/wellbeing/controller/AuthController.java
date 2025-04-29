@@ -6,6 +6,7 @@ import com.aytaj.wellbeing.dto.TokenResponse;
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
 import com.aytaj.wellbeing.dto.UserLoginDto;
 import com.aytaj.wellbeing.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,18 +35,20 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public TokenResponse refreshToken(@RequestHeader("Authorization") String authHeader){
-        return authService.refreshToken(authService.takeTokenFromHeader(authHeader));
+    public TokenResponse refreshToken(HttpServletRequest request){
+        String token = (String) request.getAttribute("token");
+        return authService.refreshToken(token);
     }
 
     @PostMapping("/logout")
-    public void   logout(@RequestHeader("Authorization") String authHeader){
-         authService.logout(authService.takeTokenFromHeader(authHeader));
+    public void   logout(HttpServletRequest request){
+        String token = (String) request.getAttribute("token");
+        authService.logout(token);
     }
 
 //    @PostMapping("/registration/specialist/")
 //
-//    login, registration, logout, password change, access token, refresh token
+//    password change
 }
 
 
