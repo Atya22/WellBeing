@@ -89,10 +89,13 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    @Override
-    public void logout(String token) {
-
+    public String takeTokenFromHeader(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new InvalidTokenException("Authorization header must start with Bearer");
+        }
+        return authHeader.substring(7);
     }
+
 
     public TokenResponse refreshToken(String refreshToken) {
         try {
@@ -142,5 +145,28 @@ public class AuthServiceImpl implements AuthService {
         } else {
             throw new IllegalArgumentException("No handler for type: " + request.getClass().getSimpleName());
         }
+    }
+
+
+
+    @Override
+    public void logout(String refreshToken) {
+    try {
+        SignedJWT jwt = SignedJWT.parse(refreshToken);
+        JWTClaimsSet claims = jwt.getJWTClaimsSet();
+
+        if (!"refresh".equals(claims.getStringClaim("type"))) {
+            throw new InvalidTokenException("Not a refresh token");
+        }
+
+        String email = claims.getSubject();
+        Long userId = claims.getLongClaim("id");
+
+        String redisKey = "refresh:" + email + ":" + userId;
+        redisService.delete(redisKey);
+
+    }catch (Exception e){
+        throw new RuntimeException("Invalid refresh token", e);
+    }
     }
 }

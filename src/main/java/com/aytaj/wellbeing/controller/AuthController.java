@@ -8,10 +8,8 @@ import com.aytaj.wellbeing.dto.UserLoginDto;
 import com.aytaj.wellbeing.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,8 +34,13 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public TokenResponse refreshToken(@RequestBody String refreshToken){
-        return authService.refreshToken(refreshToken);
+    public TokenResponse refreshToken(@RequestHeader("Authorization") String authHeader){
+        return authService.refreshToken(authService.takeTokenFromHeader(authHeader));
+    }
+
+    @PostMapping("/logout")
+    public void   logout(@RequestHeader("Authorization") String authHeader){
+         authService.logout(authService.takeTokenFromHeader(authHeader));
     }
 
 //    @PostMapping("/registration/specialist/")
