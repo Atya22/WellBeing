@@ -12,7 +12,7 @@ public interface AuthService {
 
     TokenResponse login(UserLoginDto dto);
 
-    TokenResponse refreshToken(String refreshToken) throws ParseException;
+    TokenResponse refreshToken(String refreshToken);
 
     void logout(String token);
 

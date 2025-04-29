@@ -25,9 +25,5 @@ spring:
           starttls:
             enable: true
 
-jwt:
-  access-token-expiration: 30m
-  refresh-token-expiration: 7d
-
 server:
   port: 8080

@@ -1,9 +1,11 @@
 package com.aytaj.wellbeing.service;
 
-public interface PasswordService {
-    void initiatePasswordReset(String email);
+public class PasswordService {
+    public void initiatePasswordReset(String email){
 
-    boolean resetPassword(String token, String newPassword);
+    }
 
-    boolean validatePassword(String password);
+    public boolean resetPassword(String token, String newPassword){
+        return true;
+    }
 }
