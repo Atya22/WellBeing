@@ -2,6 +2,7 @@ package com.aytaj.wellbeing.controller;
 
 
 import com.aytaj.wellbeing.dto.ClientRegisterRequest;
+import com.aytaj.wellbeing.dto.TokenResponse;
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
 import com.aytaj.wellbeing.dto.UserLoginDto;
 import com.aytaj.wellbeing.service.AuthService;
@@ -30,8 +31,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void loginUser(@Valid @RequestBody UserLoginDto request){
-        authService.login(request);
+    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request){
+        return authService.login(request);
+    }
+
+    @PostMapping("/refresh-token")
+    public String refreshToken(@RequestBody String refreshToken){
+        return authService.refreshToken(refreshToken);
     }
 
 //    @PostMapping("/registration/specialist/")

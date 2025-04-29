@@ -3,13 +3,16 @@ package com.aytaj.wellbeing.security;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.*;
 import java.security.*;
 import java.security.spec.*;
+import java.time.Duration;
 import java.util.*;
 
+@AllArgsConstructor
 @Component
 public class JwtUtil {
 
@@ -31,6 +34,24 @@ public class JwtUtil {
         SignedJWT signedJWT = new SignedJWT(
                 new JWSHeader(JWSAlgorithm.RS256),
                 claimSet.build());
+
+        signedJWT.sign(signer);
+
+        return signedJWT.serialize();
+    }
+
+
+    public String generateRefreshToken(String subject, Long id, Long refreshTokenExpiration) throws Exception{
+        JWSSigner signer = new RSASSASigner(loadPrivateKey());
+
+        JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
+                .subject(subject)
+                .expirationTime(new Date(System.currentTimeMillis() + refreshTokenExpiration))
+                .claim("type", "refresh")
+                .claim("id", id)
+                .build();
+
+        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.RS256), claimsSet);
 
         signedJWT.sign(signer);
 
