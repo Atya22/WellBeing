@@ -11,7 +11,10 @@ import com.aytaj.wellbeing.service.*;
 import com.aytaj.wellbeing.util.enums.Purpose;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -89,7 +92,9 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    public TokenResponse refreshToken(String refreshToken) {
+    @Override
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        String refreshToken = getToken(request);
         try {
             SignedJWT jwt = SignedJWT.parse(refreshToken);
             JWTClaimsSet claims = jwt.getJWTClaimsSet();
@@ -121,11 +126,10 @@ public class AuthServiceImpl implements AuthService {
 
             return new TokenResponse(newAccessToken, refreshToken);
 
-        } catch (Exception e)
-    {
-        throw new RuntimeException("Could not refresh token", e);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not refresh token", e);
+        }
     }
-}
 
 
     @SuppressWarnings("unchecked")
@@ -140,25 +144,36 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-
     @Override
-    public void logout(String refreshToken) {
-    try {
-        SignedJWT jwt = SignedJWT.parse(refreshToken);
-        JWTClaimsSet claims = jwt.getJWTClaimsSet();
+    public void logout(HttpServletRequest request) {
+        String refreshToken = getToken(request);
 
-        if (!"refresh".equals(claims.getStringClaim("type"))) {
-            throw new InvalidTokenException("Not a refresh token");
+        try {
+            SignedJWT jwt = SignedJWT.parse(refreshToken);
+            JWTClaimsSet claims = jwt.getJWTClaimsSet();
+
+            if (!"refresh".equals(claims.getStringClaim("type"))) {
+                throw new InvalidTokenException("Not a refresh token");
+            }
+
+            String email = claims.getSubject();
+            Long userId = claims.getLongClaim("id");
+
+            String redisKey = "refresh:" + email + ":" + userId;
+            redisService.delete(redisKey);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid refresh token", e);
         }
-
-        String email = claims.getSubject();
-        Long userId = claims.getLongClaim("id");
-
-        String redisKey = "refresh:" + email + ":" + userId;
-        redisService.delete(redisKey);
-
-    }catch (Exception e){
-        throw new RuntimeException("Invalid refresh token", e);
     }
+
+    public String getToken(HttpServletRequest request) {
+        String token = (String) request.getAttribute("token");
+
+        if (token == null) {
+            throw new InvalidTokenException("No token found in request attributes");
+        }
+        return token;
     }
+
 }

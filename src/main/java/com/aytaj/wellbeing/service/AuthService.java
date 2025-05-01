@@ -1,6 +1,7 @@
 package com.aytaj.wellbeing.service;
 
 import com.aytaj.wellbeing.dto.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.text.ParseException;
 
@@ -12,8 +13,8 @@ public interface AuthService {
 
     TokenResponse login(UserLoginDto dto);
 
-    TokenResponse refreshToken(String refreshToken);
+    TokenResponse refreshToken(HttpServletRequest request);
 
-    void logout(String token);
+    void logout(HttpServletRequest request);
 
 }

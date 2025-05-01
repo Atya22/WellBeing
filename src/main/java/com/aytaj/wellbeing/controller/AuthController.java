@@ -30,20 +30,18 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request){
+    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request) {
         return authService.login(request);
     }
 
     @PostMapping("/refresh-token")
-    public TokenResponse refreshToken(HttpServletRequest request){
-        String token = (String) request.getAttribute("token");
-        return authService.refreshToken(token);
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        return authService.refreshToken(request);
     }
 
     @PostMapping("/logout")
-    public void   logout(HttpServletRequest request){
-        String token = (String) request.getAttribute("token");
-        authService.logout(token);
+    public void logout(HttpServletRequest request) {
+        authService.logout(request);
     }
 
 //    @PostMapping("/registration/specialist/")
