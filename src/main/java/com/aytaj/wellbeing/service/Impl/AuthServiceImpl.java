@@ -1,5 +1,6 @@
 package com.aytaj.wellbeing.service.Impl;
 
+import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.dto.TokenResponse;
 import com.aytaj.wellbeing.exception.*;
@@ -10,6 +11,7 @@ import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.security.RefreshTokenService;
 import com.aytaj.wellbeing.service.*;
 import com.aytaj.wellbeing.util.enums.Purpose;
+import com.aytaj.wellbeing.util.enums.Role;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,6 +67,12 @@ public class AuthServiceImpl implements AuthService {
         String rawPassword = dto.getPassword();
 
         LoginUser user = userService.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with email:" + email));
+
+        if (user instanceof SpecialistEntity specialist) {
+            if (!specialist.getApprovedByModerator()) {
+                throw new UnapprovedSpecialistException("Your account is pending approval by a moderator.");
+            }
+        }
 
         if (passwordUtil.verifyPassword(rawPassword, user.getPassword())) {
             Map<String, Object> claims = new HashMap<>();

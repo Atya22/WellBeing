@@ -3,6 +3,7 @@ package com.aytaj.wellbeing.controller;
 
 import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.service.AuthService;
+import com.aytaj.wellbeing.service.SpecialistAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
 public class AuthController {
 
     private final AuthService authService;
+    private final SpecialistAuthService specialistAuthService;
 
     @PostMapping("/registration/otp-request")
     public void requestClientOtp(@Valid @RequestBody RegistrationOtpDto email) {
@@ -34,10 +36,10 @@ public class AuthController {
     @PostMapping(value = "/registration/specialist/otp-verification")
     public ResponseEntity<String> verifySpecialistOtpAndRegisterApproving(
             @RequestPart("data") @Valid @ModelAttribute SpecialistRegistrationRequest request,
-            @RequestPart("diploma")MultipartFile diplomaFile,
+            @RequestPart("diploma") MultipartFile diplomaFile,
             @RequestPart(value = "certificates", required = false) List<MultipartFile> certificateFiles
-            ) {
-        authService.registerUser(request);
+    ) {
+        specialistAuthService.registerSpecialist(request, diplomaFile, certificateFiles);
         return ResponseEntity.status(HttpStatus.CREATED).body("Specialist registration submitted for approval.");
     }
 
@@ -55,14 +57,6 @@ public class AuthController {
     public void logout(HttpServletRequest request) {
         authService.logout(request);
     }
-
-
-//    @PostMapping("/upload-cv")
-//    public ResponseEntity<?> uploadCV(@RequestParam("file") MultipartFile file, @RequestParam Long specialistId) {
-//        // validate file.getContentType().equals("application/pdf")
-//        // save to folder + update specialistEntity.setCvFilePath(...)
-//    }
-//      password change
 }
 
 

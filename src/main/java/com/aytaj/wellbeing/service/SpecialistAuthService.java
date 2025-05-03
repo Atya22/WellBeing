@@ -35,7 +35,10 @@ public class SpecialistAuthService {
 
         SpecialistEntity specialist = specialistMapper.dtoToEntity(dto, languages, methods);
 
-//        DiplomaEntity diploma = diplomaFileService.storeDiploma(diplomaFile, specialist);
+        DiplomaEntity bachelorDiploma = diplomaFileService.storeDiploma(diplomaFile, dto.getBachelorDiploma(), specialist);
+        specialist.setDiplomas(List.of(bachelorDiploma));
+
+        specialistRepository.save(specialist);
 
     }
 }
