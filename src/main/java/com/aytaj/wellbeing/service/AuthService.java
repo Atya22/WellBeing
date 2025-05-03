@@ -1,9 +1,10 @@
 package com.aytaj.wellbeing.service;
 
-import com.aytaj.wellbeing.dto.*;
+import com.aytaj.wellbeing.dto.RegisterRequest;
+import com.aytaj.wellbeing.dto.RegistrationOtpDto;
+import com.aytaj.wellbeing.dto.UserLoginDto;
+import com.aytaj.wellbeing.dto.TokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.text.ParseException;
 
 public interface AuthService {
 

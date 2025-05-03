@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -19,6 +21,7 @@ public class ClientEntity implements LoginUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String fullName;
 
     @Column(unique = true)
@@ -27,6 +30,8 @@ public class ClientEntity implements LoginUser {
     private String phoneNumber;
     private Integer age;
     private Boolean isVerified;
+
+    private LocalDate registeredAt;
 
     @Enumerated(EnumType.STRING)
     private Role role;

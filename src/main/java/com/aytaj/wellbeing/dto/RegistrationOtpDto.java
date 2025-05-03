@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.coyote.Request;
-import org.springframework.http.HttpStatus;
 
 @Setter
 @Getter

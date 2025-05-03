@@ -2,15 +2,9 @@ package com.aytaj.wellbeing.service;
 
 import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
-import com.aytaj.wellbeing.dto.RegisterRequest;
-import com.aytaj.wellbeing.dto.UserLoginDto;
-import com.aytaj.wellbeing.security.JwtUtil;
-import com.aytaj.wellbeing.security.JwtVerifier;
-import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.service.Impl.ClientHandler;
 import com.aytaj.wellbeing.service.Impl.SpecialistHandler;
 import com.aytaj.wellbeing.util.enums.Role;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

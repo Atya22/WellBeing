@@ -1,16 +1,18 @@
 package com.aytaj.wellbeing.controller;
 
 
-import com.aytaj.wellbeing.dto.ClientRegisterRequest;
-import com.aytaj.wellbeing.dto.TokenResponse;
-import com.aytaj.wellbeing.dto.RegistrationOtpDto;
-import com.aytaj.wellbeing.dto.UserLoginDto;
+import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,14 +21,24 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/registration/client/otp-request")
+    @PostMapping("/registration/otp-request")
     public void requestClientOtp(@Valid @RequestBody RegistrationOtpDto email) {
         authService.sendOtpRegistration(email);
     }
 
-    @PostMapping("/registration/client/otp-verification")
-    public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegisterRequest request) {
+    @PostMapping(value = "/registration/client/otp-verification", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegistrationRequest request) {
         authService.registerUser(request);
+    }
+
+    @PostMapping(value = "/registration/specialist/otp-verification")
+    public ResponseEntity<String> verifySpecialistOtpAndRegisterApproving(
+            @RequestPart("data") @Valid @ModelAttribute SpecialistRegistrationRequest request,
+            @RequestPart("diploma")MultipartFile diplomaFile,
+            @RequestPart(value = "certificates", required = false) List<MultipartFile> certificateFiles
+            ) {
+        authService.registerUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Specialist registration submitted for approval.");
     }
 
     @PostMapping("/login")
@@ -44,9 +56,13 @@ public class AuthController {
         authService.logout(request);
     }
 
-//    @PostMapping("/registration/specialist/")
-//
-//    password change
+
+//    @PostMapping("/upload-cv")
+//    public ResponseEntity<?> uploadCV(@RequestParam("file") MultipartFile file, @RequestParam Long specialistId) {
+//        // validate file.getContentType().equals("application/pdf")
+//        // save to folder + update specialistEntity.setCvFilePath(...)
+//    }
+//      password change
 }
 
 

@@ -2,7 +2,7 @@ package com.aytaj.wellbeing.service.Impl;
 
 import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.repository.ClientRepository;
-import com.aytaj.wellbeing.dto.ClientRegisterRequest;
+import com.aytaj.wellbeing.dto.ClientRegistrationRequest;
 import com.aytaj.wellbeing.mapper.ClientMapper;
 import com.aytaj.wellbeing.service.UserHandler;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class ClientHandler implements UserHandler<ClientRegisterRequest, ClientEntity> {
+public class ClientHandler implements UserHandler<ClientRegistrationRequest, ClientEntity> {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
 
@@ -28,7 +28,7 @@ public class ClientHandler implements UserHandler<ClientRegisterRequest, ClientE
     }
 
     @Override
-    public ClientEntity mapToEntity(ClientRegisterRequest request) {
+    public ClientEntity mapToEntity(ClientRegistrationRequest request) {
         return clientMapper.dtoToEntity(request);
     }
 

@@ -5,6 +5,9 @@ import com.aytaj.wellbeing.util.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -12,20 +15,54 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SpecialistEntity implements LoginUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String fullName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
     private String phoneNumber;
     private Integer age;
     private Integer yearsOfExperience;
     private String areaOfExpertise;
-    private Boolean documentVerified;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ManyToMany
+    @JoinTable(
+            name = "specialist_languages",
+            joinColumns = @JoinColumn(name = "specialist_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private List<Language> languages;
+
+    @ManyToMany
+    @JoinTable(
+            name = "specialist_methods",
+            joinColumns = @JoinColumn(name = "specialist_id"),
+            inverseJoinColumns = @JoinColumn(name = "method_id")
+    )
+    private List<TherapeuticMethod> therapeuticMethods;
+
+
+    private Boolean documentVerified = false;
+
+    private Boolean approvedByModerator = false;
+
+//    approved by who?
+
+    private LocalDate registeredAt;
+
+    @OneToMany(mappedBy = "specialist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DiplomaEntity> diplomas;
+
+    @OneToMany(mappedBy = "specialist", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CertificateEntity> certificates;
 
 }

@@ -1,6 +1,7 @@
 package com.aytaj.wellbeing.service.Impl;
 
 import com.aytaj.wellbeing.dto.*;
+import com.aytaj.wellbeing.dto.TokenResponse;
 import com.aytaj.wellbeing.exception.*;
 import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.security.JwtUtil;
@@ -13,11 +14,8 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -134,9 +132,9 @@ public class AuthServiceImpl implements AuthService {
 
     @SuppressWarnings("unchecked")
     private <T extends RegisterRequest> UserHandler<T, ?> resolveHandler(T request) {
-        if (request instanceof ClientRegisterRequest) {
+        if (request instanceof ClientRegistrationRequest) {
             return (UserHandler<T, ?>) clientHandler;
-        } else if (request instanceof SpecialistRegisterRequest) {
+        } else if (request instanceof SpecialistRegistrationRequest) {
             return (UserHandler<T, ?>) specialistHandler;
         } else {
             throw new IllegalArgumentException("No handler for type: " + request.getClass().getSimpleName());

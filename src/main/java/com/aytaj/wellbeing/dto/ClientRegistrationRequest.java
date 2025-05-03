@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class ClientRegisterRequest implements RegisterRequest {
+public class ClientRegistrationRequest implements RegisterRequest {
     @NotNull(message = "Full name is required")
     @Size(min = 3, message = "Full name should have at least 3 characters")
     private String fullName;
@@ -34,5 +34,6 @@ public class ClientRegisterRequest implements RegisterRequest {
     @Pattern(regexp = "\\d{5}", message = "OTP must be a 5-digit number")
     private String otp;
 
+//    for future: what if client is underage?
 }
 
