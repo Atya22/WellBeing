@@ -15,13 +15,13 @@ import java.time.LocalDate;
 @Builder
 public class CertificateDto {
 
-    @NotBlank
+    @NotBlank(message = "Title is required")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "Issued by is required")
     private String issuedBy;
 
-    @PastOrPresent
+    @PastOrPresent(message = "Certification date cannot be in the future")
     private LocalDate certificationDate;
 
     @NotNull

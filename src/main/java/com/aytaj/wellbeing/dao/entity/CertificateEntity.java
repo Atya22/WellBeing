@@ -18,15 +18,10 @@ public class CertificateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String title;
-
-    @NotBlank
+    private String fileName;
     private String issuedBy;
-
-    @PastOrPresent
     private LocalDate certificationDate;
-
     private String filePath;
 
     @ManyToOne
