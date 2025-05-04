@@ -1,10 +1,13 @@
 package com.aytaj.wellbeing.service.Impl;
 
+import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
+import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.dto.TokenResponse;
 import com.aytaj.wellbeing.exception.*;
 import com.aytaj.wellbeing.infrastructure.RedisService;
+import com.aytaj.wellbeing.mapper.ClientMapper;
 import com.aytaj.wellbeing.security.JwtUtil;
 import com.aytaj.wellbeing.security.JwtVerifier;
 import com.aytaj.wellbeing.security.PasswordUtil;
@@ -32,10 +35,10 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordUtil passwordUtil;
     private final UserService userService;
     private final JwtUtil jwtUtil;
-    private final JwtVerifier jwtVerifier;
     private final RedisService redisService;
     private final RefreshTokenService refreshTokenService;
-
+    private final ClientMapper clientMapper;
+    private final ClientRepository clientRepository;
 
     public void sendOtpRegistration(RegistrationOtpDto dto) {
         String email = dto.getEmail();
@@ -47,18 +50,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public <T extends RegisterRequest, E> void registerUser(T request) {
-
-        UserHandler<T, E> handler = (UserHandler<T, E>) resolveHandler(request);
-
+    public Boolean otpRegistrationVerification(RegisterRequest request) {
+        UserHandler<?> handler = resolveHandler(request);
         if (otpService.verifyOtp(request.getEmail(), Purpose.REGISTRATION, request.getOtp())) {
             if (handler.existsByEmail(request.getEmail())) {
                 throw new UserRegisteredBeforeException("User with email " + request.getEmail() + " already exists.");
             }
-
-            E enity = handler.mapToEntity(request);
-            handler.save(enity);
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -138,18 +138,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    @SuppressWarnings("unchecked")
-    private <T extends RegisterRequest> UserHandler<T, ?> resolveHandler(T request) {
-        if (request instanceof ClientRegistrationRequest) {
-            return (UserHandler<T, ?>) clientHandler;
-        } else if (request instanceof SpecialistRegistrationRequest) {
-            return (UserHandler<T, ?>) specialistHandler;
-        } else {
-            throw new IllegalArgumentException("No handler for type: " + request.getClass().getSimpleName());
-        }
-    }
-
-
     @Override
     public void logout(HttpServletRequest request) {
         String refreshToken = getToken(request);
@@ -180,6 +168,17 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidTokenException("No token found in request attributes");
         }
         return token;
+    }
+
+    @SuppressWarnings("unchecked")
+    private UserHandler<?> resolveHandler(RegisterRequest request) {
+        if (request instanceof ClientRegistrationRequest) {
+            return clientHandler;
+        } else if (request instanceof SpecialistRegistrationRequest) {
+            return specialistHandler;
+        } else {
+            throw new IllegalArgumentException("No handler for type: " + request.getClass().getSimpleName());
+        }
     }
 
 }

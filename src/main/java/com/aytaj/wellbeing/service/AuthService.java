@@ -8,9 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthService {
 
-    <T extends RegisterRequest, E> void registerUser(T request);
-
     void sendOtpRegistration(RegistrationOtpDto email);
+
+    Boolean otpRegistrationVerification(RegisterRequest request);
 
     TokenResponse login(UserLoginDto dto);
 

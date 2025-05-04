@@ -3,7 +3,8 @@ package com.aytaj.wellbeing.controller;
 
 import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.service.AuthService;
-import com.aytaj.wellbeing.service.SpecialistAuthService;
+import com.aytaj.wellbeing.service.ClientRegistrationService;
+import com.aytaj.wellbeing.service.SpecialistRegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ import java.util.List;
 public class AuthController {
 
     private final AuthService authService;
-    private final SpecialistAuthService specialistAuthService;
+    private final SpecialistRegistrationService specialistRegistrationService;
+    private final ClientRegistrationService clientRegistrationService;
 
     @PostMapping("/registration/otp-request")
     public void requestClientOtp(@Valid @RequestBody RegistrationOtpDto email) {
@@ -30,7 +32,7 @@ public class AuthController {
 
     @PostMapping(value = "/registration/client/otp-verification", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegistrationRequest request) {
-        authService.registerUser(request);
+       clientRegistrationService.registerClient(request);
     }
 
     @PostMapping(value = "/registration/specialist/otp-verification")
@@ -39,7 +41,7 @@ public class AuthController {
             @RequestPart("diploma") MultipartFile diplomaFile,
             @RequestPart(value = "certificates", required = false) List<MultipartFile> certificateFiles
     ) {
-        specialistAuthService.registerSpecialist(request, diplomaFile, certificateFiles);
+        specialistRegistrationService.registerSpecialist(request, diplomaFile, certificateFiles);
         return ResponseEntity.status(HttpStatus.CREATED).body("Specialist registration submitted for approval.");
     }
 
