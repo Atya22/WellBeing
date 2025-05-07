@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class ClientHandler implements UserHandler<ClientRegistrationRequest, ClientEntity> {
+public class ClientHandler implements UserHandler<ClientEntity> {
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
 
@@ -27,10 +27,6 @@ public class ClientHandler implements UserHandler<ClientRegistrationRequest, Cli
         return clientRepository.findByEmail(email);
     }
 
-    @Override
-    public ClientEntity mapToEntity(ClientRegistrationRequest request) {
-        return clientMapper.dtoToEntity(request);
-    }
 
     @Override
     public void save(ClientEntity entity) {

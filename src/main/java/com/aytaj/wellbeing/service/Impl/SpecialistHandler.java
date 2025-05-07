@@ -1,5 +1,6 @@
 package com.aytaj.wellbeing.service.Impl;
 
+import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
 import com.aytaj.wellbeing.dto.SpecialistRegistrationRequest;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Component
-public class SpecialistHandler implements UserHandler<SpecialistRegistrationRequest, SpecialistEntity> {
+public class SpecialistHandler implements UserHandler<SpecialistEntity> {
 
     private final SpecialistRepository specialistRepository;
     private final SpecialistMapper specialistMapper;
@@ -28,13 +29,7 @@ public class SpecialistHandler implements UserHandler<SpecialistRegistrationRequ
     }
 
     @Override
-    public SpecialistEntity mapToEntity(SpecialistRegistrationRequest request) {
-        return specialistMapper.dtoToEntity(request);
-    }
-
-    @Override
     public void save(SpecialistEntity entity) {
         specialistRepository.save(entity);
     }
-
 }

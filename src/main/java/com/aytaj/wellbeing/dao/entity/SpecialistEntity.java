@@ -1,6 +1,6 @@
 package com.aytaj.wellbeing.dao.entity;
 
-import com.aytaj.wellbeing.service.LoginUser;
+import com.aytaj.wellbeing.service.auth.LoginUser;
 import com.aytaj.wellbeing.util.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;

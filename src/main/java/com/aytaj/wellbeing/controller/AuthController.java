@@ -2,9 +2,9 @@ package com.aytaj.wellbeing.controller;
 
 
 import com.aytaj.wellbeing.dto.*;
-import com.aytaj.wellbeing.service.AuthService;
-import com.aytaj.wellbeing.service.ClientRegistrationService;
-import com.aytaj.wellbeing.service.SpecialistRegistrationService;
+import com.aytaj.wellbeing.service.auth.AuthService;
+import com.aytaj.wellbeing.service.auth.ClientRegistrationService;
+import com.aytaj.wellbeing.service.auth.SpecialistRegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class AuthController {
 
     @PostMapping(value = "/registration/client/otp-verification", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegistrationRequest request) {
-       clientRegistrationService.registerClient(request);
+        clientRegistrationService.registerClient(request);
     }
 
     @PostMapping(value = "/registration/specialist/otp-verification")

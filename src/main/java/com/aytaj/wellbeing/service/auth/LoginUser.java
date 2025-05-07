@@ -1,4 +1,4 @@
-package com.aytaj.wellbeing.service;
+package com.aytaj.wellbeing.service.auth;
 
 import com.aytaj.wellbeing.util.enums.Role;
 

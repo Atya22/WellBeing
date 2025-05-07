@@ -4,6 +4,7 @@ import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.service.Impl.ClientHandler;
 import com.aytaj.wellbeing.service.Impl.SpecialistHandler;
+import com.aytaj.wellbeing.service.auth.LoginUser;
 import com.aytaj.wellbeing.util.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

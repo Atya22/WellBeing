@@ -3,6 +3,7 @@ package com.aytaj.wellbeing.security;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.SignedJWT;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
@@ -14,8 +15,9 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 @Component
+@Getter
 public class JwtVerifier {
-    public static boolean verifyToken(String token) throws Exception{
+    public boolean verifyToken(String token) throws Exception{
         SignedJWT signedJWT = SignedJWT.parse(token);
 
         JWSVerifier verifier = new RSASSAVerifier((RSAPublicKey) loadPublicKey());

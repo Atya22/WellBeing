@@ -1,9 +1,10 @@
-package com.aytaj.wellbeing.service;
+package com.aytaj.wellbeing.service.auth;
 
 import com.aytaj.wellbeing.dao.entity.*;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
 import com.aytaj.wellbeing.dto.SpecialistRegistrationRequest;
 import com.aytaj.wellbeing.mapper.SpecialistMapper;
+import com.aytaj.wellbeing.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

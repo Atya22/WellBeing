@@ -1,6 +1,5 @@
-package com.aytaj.wellbeing.service.Impl;
+package com.aytaj.wellbeing.service.auth.impl;
 
-import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dto.*;
@@ -9,12 +8,14 @@ import com.aytaj.wellbeing.exception.*;
 import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.mapper.ClientMapper;
 import com.aytaj.wellbeing.security.JwtUtil;
-import com.aytaj.wellbeing.security.JwtVerifier;
 import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.security.RefreshTokenService;
 import com.aytaj.wellbeing.service.*;
+import com.aytaj.wellbeing.service.Impl.ClientHandler;
+import com.aytaj.wellbeing.service.Impl.SpecialistHandler;
+import com.aytaj.wellbeing.service.auth.AuthService;
+import com.aytaj.wellbeing.service.auth.LoginUser;
 import com.aytaj.wellbeing.util.enums.Purpose;
-import com.aytaj.wellbeing.util.enums.Role;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +38,6 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
     private final RedisService redisService;
     private final RefreshTokenService refreshTokenService;
-    private final ClientMapper clientMapper;
-    private final ClientRepository clientRepository;
 
     public void sendOtpRegistration(RegistrationOtpDto dto) {
         String email = dto.getEmail();

@@ -24,7 +24,7 @@ public class DiplomaController {
     private final ResponseService responseService;
 
     @GetMapping("/dowload/{fileName:.+}")
-    public ResponseEntity<Resource> downloadDiploma(@PathVariable String fileName){
+    public ResponseEntity<Resource> downloadDiploma(@PathVariable String fileName) {
         Resource resource = diplomaFileService.loadDiplomaFile(fileName);
 
         return responseService.prepareDownloadResponse(resource);
