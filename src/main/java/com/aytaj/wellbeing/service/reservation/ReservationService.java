@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
@@ -47,6 +49,14 @@ public class ReservationService {
         requestEntity.setStatus(RequestStatus.PENDING);
 
         reservationRequestRepository.save(requestEntity);
+    }
+
+    public List<ReservationRequestEntity> getPendingRequests(HttpServletRequest request) {
+        String specialistEmail = tokenUtils.extractEmail(request);
+        SpecialistEntity specialist = specialistRepository.findByEmail(specialistEmail).orElseThrow(
+                () -> new RuntimeException("Specialist not found")
+        );
+        return reservationRequestRepository.findBySpecialistAndStatus(specialist, RequestStatus.PENDING);
     }
 }
 
