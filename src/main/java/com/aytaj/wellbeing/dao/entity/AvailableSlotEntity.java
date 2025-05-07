@@ -1,12 +1,15 @@
 package com.aytaj.wellbeing.dao.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class AvailableSlot {
+@Getter
+@Setter
+public class AvailableSlotEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

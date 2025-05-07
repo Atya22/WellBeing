@@ -5,6 +5,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,34 +23,35 @@ public class TokenUtils {
         return header.substring(7);
     }
 
-    public Long extractUserId(String token) {
+    public Long extractUserId(HttpServletRequest request) {
         try {
-            JWTClaimsSet claims = extractAllClaims(token);
+            JWTClaimsSet claims = extractAllClaims(request);
             return ((Number) claims.getClaim("id")).longValue();
         } catch (Exception e) {
             throw new InvalidTokenException("Invalid token: cannot extract ID");
         }
     }
 
-    public String extractUserRole(String token) {
+    public String extractUserRole(HttpServletRequest request) {
         try {
-            JWTClaimsSet claims = extractAllClaims(token);
+            JWTClaimsSet claims = extractAllClaims(request);
             return (String) claims.getClaim("role");
         } catch (Exception e) {
             throw new InvalidTokenException("Invalid token: cannot extract role");
         }
     }
 
-    public String extractEmail(String token) {
+    public String extractEmail(HttpServletRequest request) {
         try {
-            JWTClaimsSet claims = extractAllClaims(token);
+            JWTClaimsSet claims = extractAllClaims(request);
             return claims.getSubject(); // email записан в subject
         } catch (Exception e) {
             throw new InvalidTokenException("Invalid token: cannot extract email");
         }
     }
 
-    private JWTClaimsSet extractAllClaims(String token) throws Exception {
+    private JWTClaimsSet extractAllClaims(HttpServletRequest request) throws Exception {
+        String token = extractBearerToken(request.getHeader("Authorization"));
         SignedJWT signedJWT = SignedJWT.parse(token);
         if (jwtVerifier.verifyToken(token)) {
             return signedJWT.getJWTClaimsSet();

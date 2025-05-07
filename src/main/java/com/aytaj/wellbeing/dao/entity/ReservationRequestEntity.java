@@ -1,10 +1,14 @@
 package com.aytaj.wellbeing.dao.entity;
 import com.aytaj.wellbeing.util.enums.RequestStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class ReservationRequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +20,10 @@ public class ReservationRequestEntity {
     @ManyToOne
     private SpecialistEntity specialist;
 
-    private LocalDateTime startTime;
+    @ManyToOne
+    private AvailableSlotEntity slot;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)

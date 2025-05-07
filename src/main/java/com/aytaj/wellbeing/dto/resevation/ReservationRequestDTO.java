@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-
 public class ReservationRequestDTO {
     private Long specialistId;
     private Long slotId;
