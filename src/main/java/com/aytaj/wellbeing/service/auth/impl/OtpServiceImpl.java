@@ -1,9 +1,9 @@
-package com.aytaj.wellbeing.service.Impl;
+package com.aytaj.wellbeing.service.auth.impl;
 
 import com.aytaj.wellbeing.dto.RegistrationOtpDto;
 import com.aytaj.wellbeing.exception.InvalidOtpException;
 import com.aytaj.wellbeing.infrastructure.EmailService;
-import com.aytaj.wellbeing.service.OtpService;
+import com.aytaj.wellbeing.service.auth.OtpService;
 import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.util.enums.Purpose;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 public class OtpServiceImpl implements OtpService {
     private final RedisService redisService;
     private final EmailService emailService;
-    private static final long OTP_EXPIRATION_MINUTES = 5;
+    private static final long OTP_EXPIRATION_MINUTES = 120;
 
     @Override
     public String generateOtp(RegistrationOtpDto dto, Purpose purpose) {
@@ -33,7 +33,7 @@ public class OtpServiceImpl implements OtpService {
         String subject = "Your WellBeing OTP Code";
         String body = "Hello,\n\nYour verification code is: " + otp +
                 "\nIt will expire in " + OTP_EXPIRATION_MINUTES + " minutes.";
-        emailService.sendEmail(dto.getEmail(), subject, body);
+//        emailService.sendEmail(dto.getEmail(), subject, body);
     }
 
     @Override

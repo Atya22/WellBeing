@@ -20,6 +20,5 @@ public class ClientRegistrationService {
             ClientEntity entity = clientMapper.dtoToEntity(request);
             clientRepository.save(entity);
         }
-
     }
 }

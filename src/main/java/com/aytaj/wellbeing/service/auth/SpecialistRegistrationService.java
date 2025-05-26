@@ -30,10 +30,12 @@ public class SpecialistRegistrationService {
     ) {
         if (authService.otpRegistrationVerification(dto)) {
 
-            List<Language> languages = languageService.findAllByNames(dto.getLanguages());
+            List<LanguageEntity> languageEntities = languageService.findAllByNames(dto.getLanguages());
             List<TherapeuticMethod> methods = therapeuticMethodService.findAllByNames(dto.getTherapeuticMethods());
 
-            SpecialistEntity specialist = specialistMapper.dtoToEntity(dto, languages, methods);
+            SpecialistEntity specialist = specialistMapper.dtoToEntity(dto, languageEntities, methods);
+
+            specialistRepository.save(specialist);
 
             DiplomaEntity bachelorDiploma = diplomaFileService.storeDiploma(
                     diplomaFile,
@@ -47,7 +49,6 @@ public class SpecialistRegistrationService {
                     specialist);
             specialist.setCertificates(certificates);
 
-            specialistRepository.save(specialist);
 
         }
 

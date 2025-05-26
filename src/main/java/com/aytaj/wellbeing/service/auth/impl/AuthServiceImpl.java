@@ -1,20 +1,20 @@
 package com.aytaj.wellbeing.service.auth.impl;
 
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
-import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.dto.TokenResponse;
 import com.aytaj.wellbeing.exception.*;
 import com.aytaj.wellbeing.infrastructure.RedisService;
-import com.aytaj.wellbeing.mapper.ClientMapper;
 import com.aytaj.wellbeing.security.JwtUtil;
 import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.security.RefreshTokenService;
-import com.aytaj.wellbeing.service.*;
-import com.aytaj.wellbeing.service.Impl.ClientHandler;
-import com.aytaj.wellbeing.service.Impl.SpecialistHandler;
+import com.aytaj.wellbeing.service.user.Impl.ClientHandler;
+import com.aytaj.wellbeing.service.user.Impl.SpecialistHandler;
 import com.aytaj.wellbeing.service.auth.AuthService;
 import com.aytaj.wellbeing.service.auth.LoginUser;
+import com.aytaj.wellbeing.service.auth.OtpService;
+import com.aytaj.wellbeing.service.user.UserHandler;
+import com.aytaj.wellbeing.service.user.UserService;
 import com.aytaj.wellbeing.util.enums.Purpose;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;

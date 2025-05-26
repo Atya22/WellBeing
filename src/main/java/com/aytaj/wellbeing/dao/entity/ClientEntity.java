@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Table(name = "client")
 public class ClientEntity implements LoginUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,10 +1,5 @@
 package com.aytaj.wellbeing.dto;
 
-import com.aytaj.wellbeing.dao.entity.Language;
-import com.aytaj.wellbeing.dao.entity.TherapeuticMethod;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -51,8 +46,8 @@ public class SpecialistRegistrationRequest implements RegisterRequest {
     @NotNull
     private DiplomaDto bachelorDiploma;
 
-    @Valid
-    private List<DiplomaDto> additionalDiplomas;
+//    @Valid
+//    private List<DiplomaDto> additionalDiplomas;
 
     @Valid
     private List<CertificateDto> certificates;

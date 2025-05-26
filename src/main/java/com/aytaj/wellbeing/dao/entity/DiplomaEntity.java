@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.Year;
 
 @Entity
 @Getter
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@Table(name = "diploma")
 public class DiplomaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +25,7 @@ public class DiplomaEntity {
 
     private String diplomaNumber;
     private String universityName;
-    private LocalDate graduationDate;
+    private Year graduationYear;
     private String fileName;
     private String filePath;
 

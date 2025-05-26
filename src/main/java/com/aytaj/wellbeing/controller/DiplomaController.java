@@ -29,5 +29,4 @@ public class DiplomaController {
 
         return responseService.prepareDownloadResponse(resource);
     }
-
 }

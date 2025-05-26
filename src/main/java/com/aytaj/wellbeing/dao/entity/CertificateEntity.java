@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "certificate")
 public class CertificateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

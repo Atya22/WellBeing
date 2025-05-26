@@ -26,19 +26,20 @@ public class AuthController {
     private final ClientRegistrationService clientRegistrationService;
 
     @PostMapping("/registration/otp-request")
-    public void requestClientOtp(@Valid @RequestBody RegistrationOtpDto email) {
+    public void requestUserOtp(@Valid @RequestBody RegistrationOtpDto email) {
         authService.sendOtpRegistration(email);
     }
 
-    @PostMapping(value = "/registration/client/otp-verification", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/registration/client/otp-verification")
     public void verifyClientOtpAndRegister(@Valid @RequestBody ClientRegistrationRequest request) {
         clientRegistrationService.registerClient(request);
     }
 
-    @PostMapping(value = "/registration/specialist/otp-verification")
+    @PostMapping(value = "/registration/specialist/otp-verification", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> verifySpecialistOtpAndRegisterApproving(
-            @RequestPart("data") @Valid @ModelAttribute SpecialistRegistrationRequest request,
+            @RequestPart("data") @Valid SpecialistRegistrationRequest request,
             @RequestPart("diploma") MultipartFile diplomaFile,
+//            @RequestPart(value = "additionalDiplomasFiles", required = false) List<MultipartFile> additionalDiplomas,
             @RequestPart(value = "certificates", required = false) List<MultipartFile> certificateFiles
     ) {
         specialistRegistrationService.registerSpecialist(request, diplomaFile, certificateFiles);
@@ -56,8 +57,9 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public void logout(HttpServletRequest request) {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
         authService.logout(request);
+        return ResponseEntity.ok("Logout success");
     }
 }
 

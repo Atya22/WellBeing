@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "specialist")
 public class SpecialistEntity implements LoginUser {
 
     @Id
@@ -40,7 +41,7 @@ public class SpecialistEntity implements LoginUser {
             joinColumns = @JoinColumn(name = "specialist_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
-    private List<Language> languages;
+    private List<LanguageEntity> languageEntities;
 
     @ManyToMany
     @JoinTable(

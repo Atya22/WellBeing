@@ -24,6 +24,6 @@ public class CertificateDto {
     @PastOrPresent(message = "Certification date cannot be in the future")
     private LocalDate certificationDate;
 
-    @NotNull
-    private MultipartFile certificateFile;
+//    @NotNull
+//    private MultipartFile certificateFile;
 }

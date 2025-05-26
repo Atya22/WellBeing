@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.Year;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class DiplomaDto {
-    @NotBlank
+    @NotNull
     private DegreeType degreeLevel;
 
     @NotBlank
@@ -25,5 +26,8 @@ public class DiplomaDto {
     private String universityName;
 
     @Past
-    private LocalDate graduationDate;
+    private Year graduationYear;
+
+//    @NotNull
+//    private MultipartFile DiplomaFile;
 }

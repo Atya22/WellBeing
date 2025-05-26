@@ -1,9 +1,14 @@
 package com.aytaj.wellbeing.dao.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-public class Language {
+@Getter
+@Setter
+@Table(name = "language")
+public class LanguageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

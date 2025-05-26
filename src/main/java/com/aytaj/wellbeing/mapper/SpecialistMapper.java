@@ -1,9 +1,8 @@
 package com.aytaj.wellbeing.mapper;
 
-import com.aytaj.wellbeing.dao.entity.Language;
+import com.aytaj.wellbeing.dao.entity.LanguageEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dao.entity.TherapeuticMethod;
-import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
 import com.aytaj.wellbeing.dto.SpecialistRegistrationRequest;
 import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.util.enums.Role;
@@ -18,7 +17,7 @@ import java.util.List;
 public class SpecialistMapper {
     public final PasswordUtil passwordUtil;
 
-    public SpecialistEntity dtoToEntity(SpecialistRegistrationRequest request, List<Language> languages, List<TherapeuticMethod> methods) {
+    public SpecialistEntity dtoToEntity(SpecialistRegistrationRequest request, List<LanguageEntity> languageEntities, List<TherapeuticMethod> methods) {
         return SpecialistEntity.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
@@ -27,7 +26,7 @@ public class SpecialistMapper {
                 .age(request.getAge())
                 .areaOfExpertise(request.getAreaOfExpertise())
                 .yearsOfExperience(request.getYearsOfExperience())
-                .languages(languages)
+                .languageEntities(languageEntities)
                 .therapeuticMethods(methods)
                 .role(Role.SPECIALIST)
                 .documentVerified(false)

@@ -23,7 +23,7 @@ public class TokenUtils {
         return header.substring(7);
     }
 
-    public Long extractUserId(HttpServletRequest request) {
+    public Long extractId(HttpServletRequest request) {
         try {
             JWTClaimsSet claims = extractAllClaims(request);
             return ((Number) claims.getClaim("id")).longValue();
@@ -32,7 +32,7 @@ public class TokenUtils {
         }
     }
 
-    public String extractUserRole(HttpServletRequest request) {
+    public String extractRole(HttpServletRequest request) {
         try {
             JWTClaimsSet claims = extractAllClaims(request);
             return (String) claims.getClaim("role");

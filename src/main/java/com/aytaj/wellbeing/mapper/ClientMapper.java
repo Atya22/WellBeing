@@ -8,6 +8,8 @@ import com.aytaj.wellbeing.util.enums.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 @AllArgsConstructor
 public class ClientMapper {
@@ -23,6 +25,7 @@ public class ClientMapper {
                 .email(clientRegistrationRequest.getEmail())
                 .age(clientRegistrationRequest.getAge())
                 .role(Role.CLIENT)
+                .registeredAt(LocalDate.now())
                 .build();
     }
 }

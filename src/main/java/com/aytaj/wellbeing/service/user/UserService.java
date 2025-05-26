@@ -1,9 +1,8 @@
-package com.aytaj.wellbeing.service;
+package com.aytaj.wellbeing.service.user;
 
 import com.aytaj.wellbeing.dao.entity.ClientEntity;
-import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
-import com.aytaj.wellbeing.service.Impl.ClientHandler;
-import com.aytaj.wellbeing.service.Impl.SpecialistHandler;
+import com.aytaj.wellbeing.service.user.Impl.ClientHandler;
+import com.aytaj.wellbeing.service.user.Impl.SpecialistHandler;
 import com.aytaj.wellbeing.service.auth.LoginUser;
 import com.aytaj.wellbeing.util.enums.Role;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +23,9 @@ public class UserService {
             return client;
         }
 
-        Optional<SpecialistEntity> specialist = specialistHandler.findByEmail(email);
-        if (specialist.isPresent()) {
-            return specialist;
-        }
+        return specialistHandler.findByEmail(email);
 
-        return Optional.empty();
     }
-
 
     public long getJwtExpirationByRole(Role role) {
         return switch (role) {
@@ -40,4 +34,5 @@ public class UserService {
             default -> 60 * 60 * 1000L; // 1 hour
         };
     }
+//    public void deleteUser()
 }

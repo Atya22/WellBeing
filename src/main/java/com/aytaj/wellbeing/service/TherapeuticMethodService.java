@@ -14,7 +14,7 @@ public class TherapeuticMethodService {
     private final TherapeuticMethodRepository methodRepository;
 
     public List<TherapeuticMethod> findAllByNames(List<String> names) {
-        List<TherapeuticMethod> found = methodRepository.findByNameIgnoreCase(names);
+        List<TherapeuticMethod> found = methodRepository.findByNameInIgnoreCase(names);
         if (found.size() != names.size()) {
             throw new IllegalArgumentException("One or more therapeutic methods are not supported.");
         }

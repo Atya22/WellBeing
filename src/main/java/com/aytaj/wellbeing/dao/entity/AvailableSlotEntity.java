@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "available_slot")
 public class AvailableSlotEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

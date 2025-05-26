@@ -1,11 +1,9 @@
-package com.aytaj.wellbeing.service.Impl;
+package com.aytaj.wellbeing.service.user.Impl;
 
-import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
-import com.aytaj.wellbeing.dto.SpecialistRegistrationRequest;
 import com.aytaj.wellbeing.mapper.SpecialistMapper;
-import com.aytaj.wellbeing.service.UserHandler;
+import com.aytaj.wellbeing.service.user.UserHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

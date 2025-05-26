@@ -16,7 +16,7 @@ public class DiplomaMapper {
                 .degreeLevel(dto.getDegreeLevel())
                 .diplomaNumber(dto.getDiplomaNumber())
                 .universityName(dto.getUniversityName())
-                .graduationDate(dto.getGraduationDate())
+                .graduationYear(dto.getGraduationYear())
                 .fileName(fileName)
                 .filePath(filePath)
                 .specialist(specialist)
