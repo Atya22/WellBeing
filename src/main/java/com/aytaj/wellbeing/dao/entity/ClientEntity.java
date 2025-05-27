@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "client")
 public class ClientEntity implements LoginUser {
     @Id
@@ -34,3 +34,4 @@ public class ClientEntity implements LoginUser {
     private Role role;
 
 }
+

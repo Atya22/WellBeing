@@ -8,12 +8,12 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.Year;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@Entity
 @Table(name = "diploma")
 public class DiplomaEntity {
     @Id

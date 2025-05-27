@@ -8,12 +8,12 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "specialist")
 public class SpecialistEntity implements LoginUser {
 
@@ -65,5 +65,4 @@ public class SpecialistEntity implements LoginUser {
 
     @OneToMany(mappedBy = "specialist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CertificateEntity> certificates;
-
 }

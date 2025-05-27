@@ -1,0 +1,164 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250527-01
+      author: aytaj
+      changes:
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column: { name: full_name, type: VARCHAR(255) }
+              - column: { name: email, type: VARCHAR(255), constraints: { unique: true } }
+              - column: { name: password, type: VARCHAR(255) }
+              - column: { name: phone_number, type: VARCHAR(255) }
+              - column: { name: age, type: INTEGER }
+              - column: { name: is_verified, type: BOOLEAN }
+              - column: { name: registered_at, type: DATE }
+              - column: { name: role, type: VARCHAR(50) }
+
+        - createTable:
+            tableName: specialist
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: full_name, type: VARCHAR(255) }
+              - column: { name: email, type: VARCHAR(255), constraints: { unique: true } }
+              - column: { name: password, type: VARCHAR(255) }
+              - column: { name: phone_number, type: VARCHAR(255) }
+              - column: { name: age, type: INTEGER }
+              - column: { name: years_of_experience, type: INTEGER }
+              - column: { name: area_of_expertise, type: VARCHAR(255) }
+              - column: { name: role, type: VARCHAR(50) }
+              - column: { name: document_verified, type: BOOLEAN }
+              - column: { name: approved_by_moderator, type: BOOLEAN }
+              - column: { name: registered_at, type: DATE }
+
+        - createTable:
+            tableName: language
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: name, type: VARCHAR(255), constraints: { unique: true } }
+
+        - createTable:
+            tableName: therapeutic_method
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: name, type: VARCHAR(255), constraints: { unique: true } }
+
+        - createTable:
+            tableName: diploma
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: degree_level, type: VARCHAR(50) }
+              - column: { name: diploma_number, type: VARCHAR(255) }
+              - column: { name: university_name, type: VARCHAR(255) }
+              - column: { name: graduation_year, type: INTEGER }
+              - column: { name: file_name, type: VARCHAR(255) }
+              - column: { name: file_path, type: VARCHAR(255) }
+              - column: { name: specialist_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: diploma
+            baseColumnNames: specialist_id
+            referencedTableName: specialist
+            referencedColumnNames: id
+            constraintName: fk_diploma_specialist
+
+        - createTable:
+            tableName: certificate
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: title, type: VARCHAR(255) }
+              - column: { name: file_name, type: VARCHAR(255) }
+              - column: { name: issued_by, type: VARCHAR(255) }
+              - column: { name: certification_date, type: DATE }
+              - column: { name: file_path, type: VARCHAR(255) }
+              - column: { name: specialist_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: certificate
+            baseColumnNames: specialist_id
+            referencedTableName: specialist
+            referencedColumnNames: id
+            constraintName: fk_certificate_specialist
+
+        - createTable:
+            tableName: available_slot
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: specialist_id, type: BIGINT }
+              - column: { name: start_time, type: TIMESTAMP }
+              - column: { name: is_booked, type: BOOLEAN }
+        - addForeignKeyConstraint:
+            baseTableName: available_slot
+            baseColumnNames: specialist_id
+            referencedTableName: specialist
+            referencedColumnNames: id
+            constraintName: fk_slot_specialist
+
+        - createTable:
+            tableName: reservation_request
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: client_id, type: BIGINT }
+              - column: { name: specialist_id, type: BIGINT }
+              - column: { name: slot_id, type: BIGINT }
+              - column: { name: description, type: TEXT }
+              - column: { name: status, type: VARCHAR(50) }
+              - column: { name: created_at, type: TIMESTAMP }
+        - addForeignKeyConstraint:
+            baseTableName: reservation_request
+            baseColumnNames: client_id
+            referencedTableName: client
+            referencedColumnNames: id
+            constraintName: fk_reservation_client
+        - addForeignKeyConstraint:
+            baseTableName: reservation_request
+            baseColumnNames: specialist_id
+            referencedTableName: specialist
+            referencedColumnNames: id
+            constraintName: fk_reservation_specialist
+        - addForeignKeyConstraint:
+            baseTableName: reservation_request
+            baseColumnNames: slot_id
+            referencedTableName: available_slot
+            referencedColumnNames: id
+            constraintName: fk_reservation_slot
+
+        - createTable:
+            tableName: specialist_languages
+            columns:
+              - column: { name: specialist_id, type: BIGINT }
+              - column: { name: language_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: specialist_languages
+            baseColumnNames: specialist_id
+            referencedTableName: specialist
+            referencedColumnNames: id
+            constraintName: fk_specialist_languages_specialist
+        - addForeignKeyConstraint:
+            baseTableName: specialist_languages
+            baseColumnNames: language_id
+            referencedTableName: language
+            referencedColumnNames: id
+            constraintName: fk_specialist_languages_language
+
+        - createTable:
+            tableName: specialist_methods
+            columns:
+              - column: { name: specialist_id, type: BIGINT }
+              - column: { name: method_id, type: BIGINT }
+        - addForeignKeyConstraint:
+            baseTableName: specialist_methods
+            baseColumnNames: specialist_id
+            referencedTableName: specialist
+            referencedColumnNames: id
+            constraintName: fk_specialist_methods_specialist
+        - addForeignKeyConstraint:
+            baseTableName: specialist_methods
+            baseColumnNames: method_id
+            referencedTableName: therapeutic_method
+            referencedColumnNames: id
+            constraintName: fk_specialist_methods_method

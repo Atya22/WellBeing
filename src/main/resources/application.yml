@@ -3,6 +3,7 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
@@ -10,10 +11,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/changelog-master.yaml
+
   data:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+
   mail:
     host: ${SMTP_HOST}
     port: ${SMTP_PORT}

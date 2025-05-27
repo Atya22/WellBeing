@@ -1,4 +1,5 @@
 package com.aytaj.wellbeing.dao.entity;
+
 import com.aytaj.wellbeing.util.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,9 +7,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @Table(name = "reservation_request")
 public class ReservationRequestEntity {
     @Id

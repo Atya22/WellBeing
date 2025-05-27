@@ -6,9 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @Table(name = "available_slot")
 public class AvailableSlotEntity {
     @Id
