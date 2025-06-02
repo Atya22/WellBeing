@@ -1,5 +1,7 @@
-package com.aytaj.wellbeing.dto;
+package com.aytaj.wellbeing.dto.auth;
 
+import com.aytaj.wellbeing.dto.CertificateDto;
+import com.aytaj.wellbeing.dto.DiplomaDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;

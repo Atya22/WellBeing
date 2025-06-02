@@ -2,7 +2,7 @@ package com.aytaj.wellbeing.mapper;
 
 import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.repository.ClientRepository;
-import com.aytaj.wellbeing.dto.ClientRegistrationRequest;
+import com.aytaj.wellbeing.dto.auth.ClientRegistrationRequest;
 import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.util.enums.Role;
 import lombok.AllArgsConstructor;

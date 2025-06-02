@@ -38,7 +38,7 @@ public class DiplomaFileService {
             Path filePath = diplomaStoragePath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-            DiplomaEntity diploma = diplomaMapper.DtoToEntity(dto, fileName, filePath.toString(), specialist);
+            DiplomaEntity diploma = diplomaMapper.dtoToEntity(dto, fileName, filePath.toString(), specialist);
 
             return diplomaRepository.save(diploma);
         } catch (IOException e) {

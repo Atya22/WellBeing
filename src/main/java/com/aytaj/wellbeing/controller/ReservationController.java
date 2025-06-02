@@ -2,13 +2,11 @@ package com.aytaj.wellbeing.controller;
 
 
 import com.aytaj.wellbeing.dao.entity.ReservationRequestEntity;
-import com.aytaj.wellbeing.dto.resevation.ReservationRequestDTO;
+import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
 import com.aytaj.wellbeing.service.reservation.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/reservation")
 @RequiredArgsConstructor
+
 public class ReservationController {
     private final ReservationService reservationService;
 

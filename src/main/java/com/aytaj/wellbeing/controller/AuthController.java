@@ -2,6 +2,10 @@ package com.aytaj.wellbeing.controller;
 
 
 import com.aytaj.wellbeing.dto.*;
+import com.aytaj.wellbeing.dto.auth.ClientRegistrationRequest;
+import com.aytaj.wellbeing.dto.auth.RegistrationOtpDto;
+import com.aytaj.wellbeing.dto.auth.SpecialistRegistrationRequest;
+import com.aytaj.wellbeing.dto.auth.UserLoginDto;
 import com.aytaj.wellbeing.service.auth.AuthService;
 import com.aytaj.wellbeing.service.auth.ClientRegistrationService;
 import com.aytaj.wellbeing.service.auth.SpecialistRegistrationService;
@@ -39,16 +43,10 @@ public class AuthController {
     public ResponseEntity<String> verifySpecialistOtpAndRegisterApproving(
             @RequestPart("data") @Valid SpecialistRegistrationRequest request,
             @RequestPart("diploma") MultipartFile diplomaFile,
-//            @RequestPart(value = "additionalDiplomasFiles", required = false) List<MultipartFile> additionalDiplomas,
             @RequestPart(value = "certificates", required = false) List<MultipartFile> certificateFiles
     ) {
         specialistRegistrationService.registerSpecialist(request, diplomaFile, certificateFiles);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Specialist registration submitted for approval.");
-    }
-
-    @PostMapping("/login")
-    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request) {
-        return authService.login(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Specialist auth submitted for approval.");
     }
 
     @PostMapping("/refresh-token")
@@ -61,6 +59,9 @@ public class AuthController {
         authService.logout(request);
         return ResponseEntity.ok("Logout success");
     }
+
+    @PostMapping("/login")
+    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request) {
+        return authService.login(request);
+    }
 }
-
-

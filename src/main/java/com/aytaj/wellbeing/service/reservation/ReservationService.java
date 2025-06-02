@@ -1,6 +1,5 @@
 package com.aytaj.wellbeing.service.reservation;
 
-import ch.qos.logback.core.net.server.Client;
 import com.aytaj.wellbeing.dao.entity.AvailableSlotEntity;
 import com.aytaj.wellbeing.dao.entity.ClientEntity;
 import com.aytaj.wellbeing.dao.entity.ReservationRequestEntity;
@@ -9,7 +8,7 @@ import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
 import com.aytaj.wellbeing.dao.repository.reservation.AvailableSlotRepository;
 import com.aytaj.wellbeing.dao.repository.reservation.ReservationRequestRepository;
-import com.aytaj.wellbeing.dto.resevation.ReservationRequestDTO;
+import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
 import com.aytaj.wellbeing.security.TokenUtils;
 import com.aytaj.wellbeing.util.enums.RequestStatus;
 import jakarta.servlet.http.HttpServletRequest;

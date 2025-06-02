@@ -1,10 +1,16 @@
 package com.aytaj.wellbeing.dao.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "therapeutic_method")
-public class TherapeuticMethod {
+public class TherapeuticMethodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

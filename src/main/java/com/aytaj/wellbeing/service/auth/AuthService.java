@@ -1,8 +1,8 @@
 package com.aytaj.wellbeing.service.auth;
 
-import com.aytaj.wellbeing.dto.RegisterRequest;
-import com.aytaj.wellbeing.dto.RegistrationOtpDto;
-import com.aytaj.wellbeing.dto.UserLoginDto;
+import com.aytaj.wellbeing.dto.auth.RegisterRequest;
+import com.aytaj.wellbeing.dto.auth.RegistrationOtpDto;
+import com.aytaj.wellbeing.dto.auth.UserLoginDto;
 import com.aytaj.wellbeing.dto.TokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 

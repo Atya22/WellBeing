@@ -1,8 +1,8 @@
 package com.aytaj.wellbeing.service.auth.impl;
 
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
-import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.dto.TokenResponse;
+import com.aytaj.wellbeing.dto.auth.*;
 import com.aytaj.wellbeing.exception.*;
 import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.security.JwtUtil;

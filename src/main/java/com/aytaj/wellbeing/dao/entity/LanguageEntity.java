@@ -1,12 +1,14 @@
 package com.aytaj.wellbeing.dao.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "language")
 public class LanguageEntity {
     @Id

@@ -1,4 +1,4 @@
-package com.aytaj.wellbeing.dto.resevation;
+package com.aytaj.wellbeing.dto.reservation;
 
 
 import lombok.Builder;

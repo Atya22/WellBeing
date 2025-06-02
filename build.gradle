@@ -5,20 +5,6 @@ plugins {
     id 'org.liquibase.gradle' version '2.2.0'
 }
 
-//liquibase {
-//    activities {
-//        main  {
-//            changeLogFile = 'src/main/resources/db/changelog/changelog-01-initial-schema.yaml'
-//            url = System.getenv("DB_URL")
-//            username = System.getenv("DB_USERNAME")
-//            password =  System.getenv("DB_PASSWORD")
-//            driver = 'org.postgresql.Driver'
-//        }
-//    }
-//    runList = 'main'
-//}
-
-
 group = 'com.aytaj'
 version = '0.0.1-SNAPSHOT'
 

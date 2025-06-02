@@ -1,6 +1,6 @@
 package com.aytaj.wellbeing.service.auth.impl;
 
-import com.aytaj.wellbeing.dto.RegistrationOtpDto;
+import com.aytaj.wellbeing.dto.auth.RegistrationOtpDto;
 import com.aytaj.wellbeing.exception.InvalidOtpException;
 import com.aytaj.wellbeing.infrastructure.EmailService;
 import com.aytaj.wellbeing.service.auth.OtpService;

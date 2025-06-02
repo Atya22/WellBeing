@@ -2,7 +2,7 @@ package com.aytaj.wellbeing.service.auth;
 
 import com.aytaj.wellbeing.dao.entity.*;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
-import com.aytaj.wellbeing.dto.SpecialistRegistrationRequest;
+import com.aytaj.wellbeing.dto.auth.SpecialistRegistrationRequest;
 import com.aytaj.wellbeing.mapper.SpecialistMapper;
 import com.aytaj.wellbeing.service.*;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class SpecialistRegistrationService {
         if (authService.otpRegistrationVerification(dto)) {
 
             List<LanguageEntity> languageEntities = languageService.findAllByNames(dto.getLanguages());
-            List<TherapeuticMethod> methods = therapeuticMethodService.findAllByNames(dto.getTherapeuticMethods());
+            List<TherapeuticMethodEntity> methods = therapeuticMethodService.findAllByNames(dto.getTherapeuticMethods());
 
             SpecialistEntity specialist = specialistMapper.dtoToEntity(dto, languageEntities, methods);
 

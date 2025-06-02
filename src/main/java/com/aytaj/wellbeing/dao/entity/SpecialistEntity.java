@@ -49,7 +49,7 @@ public class SpecialistEntity implements LoginUser {
             joinColumns = @JoinColumn(name = "specialist_id"),
             inverseJoinColumns = @JoinColumn(name = "method_id")
     )
-    private List<TherapeuticMethod> therapeuticMethods;
+    private List<TherapeuticMethodEntity> therapeuticMethodEntities;
 
 
     private Boolean documentVerified = false;
