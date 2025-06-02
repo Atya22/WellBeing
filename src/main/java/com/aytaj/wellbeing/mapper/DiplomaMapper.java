@@ -18,4 +18,13 @@ public class DiplomaMapper {
                 .specialist(specialist)
                 .build();
     }
+
+    public DiplomaDto entityToDto(DiplomaEntity diploma) {
+        return DiplomaDto.builder()
+                .degreeLevel(diploma.getDegreeLevel())
+                .diplomaNumber(diploma.getDiplomaNumber())
+                .universityName(diploma.getUniversityName())
+                .graduationYear(diploma.getGraduationYear())
+                .build();
+    }
 }

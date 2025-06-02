@@ -23,9 +23,9 @@ public class SpecialistController {
         return ResponseEntity.ok(specialists);
     }
 
-//    @RequestMapping("/{id}")
-//    @GetMapping
-//    public SpecialistDetailsDto getSpecialist(@PathVariable Long id){
-//        return specialistService.getSpecialist(id);
-//    }
+    @RequestMapping("/{id}")
+    @GetMapping
+    public SpecialistDetailsDto getSpecialist(@PathVariable Long id){
+        return specialistService.getSpecialist(id);
+    }
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class CertificateMapper {
 
     public CertificateEntity dtoToEntity(CertificateDto dto,
-                                      String fileName,
-                                      String filePath,
-                                      SpecialistEntity specialist) {
+                                         String fileName,
+                                         String filePath,
+                                         SpecialistEntity specialist) {
         return CertificateEntity.builder()
                 .title(dto.getTitle())
                 .issuedBy(dto.getIssuedBy())
@@ -19,6 +19,14 @@ public class CertificateMapper {
                 .fileName(fileName)
                 .filePath(filePath)
                 .specialist(specialist)
+                .build();
+    }
+
+    public CertificateDto entityToDo(CertificateEntity entity) {
+        return CertificateDto.builder()
+                .title(entity.getTitle())
+                .issuedBy(entity.getIssuedBy())
+                .certificationDate(entity.getCertificationDate())
                 .build();
     }
 }

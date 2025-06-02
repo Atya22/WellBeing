@@ -41,7 +41,7 @@ public class SpecialistEntity implements LoginUser {
             joinColumns = @JoinColumn(name = "specialist_id"),
             inverseJoinColumns = @JoinColumn(name = "language_id")
     )
-    private List<LanguageEntity> languageEntities;
+    private List<LanguageEntity> languages;
 
     @ManyToMany
     @JoinTable(
@@ -49,7 +49,7 @@ public class SpecialistEntity implements LoginUser {
             joinColumns = @JoinColumn(name = "specialist_id"),
             inverseJoinColumns = @JoinColumn(name = "method_id")
     )
-    private List<TherapeuticMethodEntity> therapeuticMethodEntities;
+    private List<TherapeuticMethodEntity> therapeuticMethods;
 
 
     private Boolean documentVerified = false;
