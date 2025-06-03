@@ -1,5 +1,4 @@
 package com.aytaj.wellbeing.controller;
-
 import com.aytaj.wellbeing.dto.SpecialistDetailsDto;
 import com.aytaj.wellbeing.dto.SpecialistSearchDto;
 import com.aytaj.wellbeing.service.user.SpecialistService;

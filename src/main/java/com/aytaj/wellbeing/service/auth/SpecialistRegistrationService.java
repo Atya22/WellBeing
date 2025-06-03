@@ -6,6 +6,7 @@ import com.aytaj.wellbeing.dto.auth.SpecialistRegistrationRequest;
 import com.aytaj.wellbeing.mapper.SpecialistMapper;
 import com.aytaj.wellbeing.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,7 @@ public class SpecialistRegistrationService {
     private final CertificateFileService certificateFileService;
     private final AuthService authService;
 
-
+    @CacheEvict(value = "specialistPages", allEntries = true)
     public void registerSpecialist(
             SpecialistRegistrationRequest dto,
             MultipartFile diplomaFile,
@@ -48,9 +49,6 @@ public class SpecialistRegistrationService {
                     dto.getCertificates(),
                     specialist);
             specialist.setCertificates(certificates);
-
-
         }
-
     }
 }
