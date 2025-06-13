@@ -23,14 +23,23 @@ public class TokenUtils {
         return header.substring(7);
     }
 
-    public Long extractId(HttpServletRequest request) {
+    public String extractEmail(HttpServletRequest request) {
         try {
             JWTClaimsSet claims = extractAllClaims(request);
-            return ((Number) claims.getClaim("id")).longValue();
+            return ((String) claims.getClaim("email"));
         } catch (Exception e) {
-            throw new InvalidTokenException("Invalid token: cannot extract ID");
+            throw new InvalidTokenException("Invalid token: cannot extract email");
         }
     }
+
+//    public Long extractId(HttpServletRequest request) {
+//        try {
+//            JWTClaimsSet claims = extractAllClaims(request);
+//            return ((Number) claims.getClaim("id")).longValue();
+//        } catch (Exception e) {
+//            throw new InvalidTokenException("Invalid token: cannot extract ID");
+//        }
+//    }
 
     public String extractRole(HttpServletRequest request) {
         try {
@@ -41,12 +50,12 @@ public class TokenUtils {
         }
     }
 
-    public String extractEmail(HttpServletRequest request) {
+    public Long extractId(HttpServletRequest request) {
         try {
             JWTClaimsSet claims = extractAllClaims(request);
-            return claims.getSubject(); // email записан в subject
+            return Long.parseLong(claims.getSubject());
         } catch (Exception e) {
-            throw new InvalidTokenException("Invalid token: cannot extract email");
+            throw new InvalidTokenException("Invalid token: cannot extract ID");
         }
     }
 
@@ -59,5 +68,4 @@ public class TokenUtils {
             throw new InvalidTokenException("JWT signature verification failed");
         }
     }
-
 }

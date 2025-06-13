@@ -16,6 +16,7 @@ import com.aytaj.wellbeing.service.auth.OtpService;
 import com.aytaj.wellbeing.service.user.UserHandler;
 import com.aytaj.wellbeing.service.user.UserService;
 import com.aytaj.wellbeing.util.enums.Purpose;
+import com.aytaj.wellbeing.util.enums.Role;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
@@ -81,8 +82,8 @@ public class AuthServiceImpl implements AuthService {
             long refreshTokenExpiration = Duration.ofDays(7).toMillis();
 
             try {
-                String accessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), accessTokenExpiration, claims);
-                String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getId(), refreshTokenExpiration);
+                String accessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getRole(), accessTokenExpiration, claims);
+                String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getId(), user.getRole(), refreshTokenExpiration);
 
                 redisService.set("refresh:" + user.getId(), refreshToken, refreshTokenExpiration);
                 refreshTokenService.storeRefreshToken(user.getEmail(), user.getId(), refreshToken, refreshTokenExpiration);
@@ -125,9 +126,10 @@ public class AuthServiceImpl implements AuthService {
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
 
             Map<String, Object> newClaims = Map.of("role", user.getRole().name());
-            long accessExp = userService.getJwtExpirationByRole(user.getRole());
+            Role userRole = user.getRole();
+            long accessExp = userService.getJwtExpirationByRole(userRole);
 
-            String newAccessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), accessExp, newClaims);
+            String newAccessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), userRole, accessExp, newClaims);
 
             return new TokenResponse(newAccessToken, refreshToken);
 

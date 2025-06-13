@@ -1,29 +1,28 @@
 package com.aytaj.wellbeing.security;
 
+import com.aytaj.wellbeing.util.enums.Role;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
 import com.nimbusds.jwt.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.*;
-import java.security.*;
-import java.security.spec.*;
-import java.time.Duration;
 import java.util.*;
+
 
 @AllArgsConstructor
 @Component
 public class JwtUtil {
+    private final KeyUtil keyUtil;
 
-    public String generateToken(String subject, Long id,  long expirationMillis, Map<String, Object> claims) throws Exception {
-        claims.put("id", id);
-        JWSSigner signer = new RSASSASigner(loadPrivateKey());
+    public String generateToken(String email, Long id, Role role, long expirationMillis, Map<String, Object> claims) throws Exception {
+        claims.put("email", email);
+        claims.put("roles", List.of(role.name()));
+        JWSSigner signer = new RSASSASigner(keyUtil.loadPrivateKey());
         JWTClaimsSet.Builder claimSet = new JWTClaimsSet.Builder()
-                .subject(subject)
+                .subject(id.toString())
                 .issueTime(new Date(System.currentTimeMillis()))
                 .expirationTime(new Date(System.currentTimeMillis() + expirationMillis));
-
 
         for (Map.Entry<String, Object> entry : claims.entrySet()) {
             String key = entry.getKey();
@@ -41,14 +40,15 @@ public class JwtUtil {
     }
 
 
-    public String generateRefreshToken(String subject, Long id, Long refreshTokenExpiration) throws Exception{
-        JWSSigner signer = new RSASSASigner(loadPrivateKey());
+    public String generateRefreshToken(String email, Long id, Role role, Long refreshTokenExpiration) throws Exception{
+        JWSSigner signer = new RSASSASigner(keyUtil.loadPrivateKey());
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(subject)
+                .subject(id.toString())
                 .expirationTime(new Date(System.currentTimeMillis() + refreshTokenExpiration))
                 .claim("type", "refresh")
-                .claim("id", id)
+                .claim("email", email)
+                .claim("roles", List.of(role.name()))
                 .build();
 
         SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.RS256), claimsSet);
@@ -56,18 +56,5 @@ public class JwtUtil {
         signedJWT.sign(signer);
 
         return signedJWT.serialize();
-    }
-
-
-    private static PrivateKey loadPrivateKey() throws Exception {
-        String key = Files.readString(Path.of("src/main/resources/keys/private.pem"))
-                .replaceAll("-----\\w+ PRIVATE KEY-----", "")
-                .replaceAll("\\s+", "");
-
-        byte[] keyBytes = Base64.getDecoder().decode(key);
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-
-        return kf.generatePrivate(spec);
     }
 }
