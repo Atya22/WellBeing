@@ -39,13 +39,14 @@ out/
 # Env
 .env
 
-
-docker-compose.yml
-src/main/resources/keys/private.pem
-src/main/resources/keys/public.pem
-
-/uploads/
+#keys
+src/main/resources/keys/
 
 #html codes
 stripe-test.html
+
+
+docker-compose.yml
+
+/uploads/
 
