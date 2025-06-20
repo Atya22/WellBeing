@@ -7,6 +7,7 @@ import com.aytaj.wellbeing.service.reservation.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
+    @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> requestSession(@RequestBody ReservationRequestDTO dto,
                                             HttpServletRequest request
     ) {
@@ -31,4 +33,6 @@ public class ReservationController {
         List<ReservationRequestEntity> requests = reservationService.getPendingRequests(request);
         return ResponseEntity.ok(requests);
     }
+
+
 }

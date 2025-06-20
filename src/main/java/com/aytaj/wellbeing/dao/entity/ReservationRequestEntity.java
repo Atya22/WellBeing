@@ -32,4 +32,9 @@ public class ReservationRequestEntity {
     private RequestStatus status = RequestStatus.PENDING;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private String paymentIntentId;
+
+    private boolean paymentCaptured;
+
 }

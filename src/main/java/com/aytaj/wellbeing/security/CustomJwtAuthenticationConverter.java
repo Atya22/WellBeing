@@ -11,7 +11,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
-        jwtConverter.setJwtGrantedAuthoritiesConverter(new CustomRoleConverter()); // 👈 вот здесь
+        jwtConverter.setJwtGrantedAuthoritiesConverter(new CustomRoleConverter());
 
         return jwtConverter.convert(jwt);
     }

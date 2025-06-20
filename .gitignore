@@ -46,3 +46,6 @@ src/main/resources/keys/public.pem
 
 /uploads/
 
+#html codes
+stripe-test.html
+

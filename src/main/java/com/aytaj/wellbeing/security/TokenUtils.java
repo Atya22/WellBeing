@@ -32,15 +32,6 @@ public class TokenUtils {
         }
     }
 
-//    public Long extractId(HttpServletRequest request) {
-//        try {
-//            JWTClaimsSet claims = extractAllClaims(request);
-//            return ((Number) claims.getClaim("id")).longValue();
-//        } catch (Exception e) {
-//            throw new InvalidTokenException("Invalid token: cannot extract ID");
-//        }
-//    }
-
     public String extractRole(HttpServletRequest request) {
         try {
             JWTClaimsSet claims = extractAllClaims(request);

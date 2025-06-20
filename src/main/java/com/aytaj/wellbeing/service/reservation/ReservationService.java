@@ -10,11 +10,15 @@ import com.aytaj.wellbeing.dao.repository.reservation.AvailableSlotRepository;
 import com.aytaj.wellbeing.dao.repository.reservation.ReservationRequestRepository;
 import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
 import com.aytaj.wellbeing.security.TokenUtils;
+import com.aytaj.wellbeing.service.payment.PaymentService;
 import com.aytaj.wellbeing.util.enums.RequestStatus;
+import com.stripe.model.PaymentIntent;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -25,10 +29,13 @@ public class ReservationService {
     private final SpecialistRepository specialistRepository;
     private final AvailableSlotRepository availableSlotRepository;
     private final ReservationRequestRepository reservationRequestRepository;
+    private final PaymentService paymentService;
 
+
+    @Transactional
     public void requestReservation(ReservationRequestDTO dto, HttpServletRequest request) {
-        String clientEmail = tokenUtils.extractEmail(request);
-        ClientEntity client = clientRepository.findByEmail(clientEmail).orElseThrow(
+        Long clientId = tokenUtils.extractId(request);
+        ClientEntity client = clientRepository.findById(clientId).orElseThrow(
                 () -> new RuntimeException("Client not found"));
 
         SpecialistEntity specialist = specialistRepository.findById(dto.getSpecialistId()).orElseThrow(
@@ -46,6 +53,8 @@ public class ReservationService {
         requestEntity.setSlot(slot);
         requestEntity.setDescription(dto.getDescription());
         requestEntity.setStatus(RequestStatus.PENDING);
+
+        requestEntity.setPaymentIntentId(dto.getPaymentIntentId());
 
         reservationRequestRepository.save(requestEntity);
     }
