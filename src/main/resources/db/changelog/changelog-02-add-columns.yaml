@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250621-01
+      author: aytaj
+      changes:
+        - addColumn:
+            tableName: available_slot
+            columns:
+              - column:
+                  name: price
+                  type: NUMERIC(10, 2)
+        - addColumn:
+            tableName: reservation_request
+            columns:
+              - column:
+                  name: paymentIntentId
+                  type: VARCHAR(255)
+              - column:
+                  name: paymentCaptured
+                  type: BOOLEAN
+

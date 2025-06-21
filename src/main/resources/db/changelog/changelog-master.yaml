@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/changelog-01-initial-schema.yaml
+  - include:
+      file: db/changelog/changelog-02-add-columns.yaml
