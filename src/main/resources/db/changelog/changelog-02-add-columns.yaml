@@ -18,4 +18,3 @@ databaseChangeLog:
               - column:
                   name: paymentCaptured
                   type: BOOLEAN
-

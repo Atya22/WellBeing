@@ -1,4 +1,4 @@
-package com.aytaj.wellbeing.dao.repository.reservation;
+package com.aytaj.wellbeing.dao.repository;
 
 
 import com.aytaj.wellbeing.dao.entity.AvailableSlotEntity;

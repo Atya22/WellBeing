@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250622-01
+      author: aytaj
+      changes:
+      - addColumn:
+          tableName: available_slot
+          columns:
+            - column:
+                name: endTime
+                type: TIMESTAMP

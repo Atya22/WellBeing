@@ -51,6 +51,7 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public TokenResponse refreshToken(HttpServletRequest request) {
+        System.out.println("Hit refresh-token endpoint");
         return authService.refreshToken(request);
     }
 

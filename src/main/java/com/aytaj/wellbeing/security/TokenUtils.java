@@ -1,20 +1,32 @@
 package com.aytaj.wellbeing.security;
 
 import com.aytaj.wellbeing.exception.InvalidTokenException;
+import com.aytaj.wellbeing.exception.TokenExpiredException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
+import java.util.Date;
+
 
 @Component
 @RequiredArgsConstructor
 public class TokenUtils {
     private final JwtVerifier jwtVerifier;
+
+    public void validateRefreshToken(JWTClaimsSet claims) throws ParseException {
+        if (!"refresh".equals(claims.getStringClaim("type"))) {
+            throw new InvalidTokenException("Not a refresh token");
+        }
+        if (claims.getExpirationTime().before(new Date())) {
+            throw new TokenExpiredException("Refresh token expired");
+        }
+    }
+
 
     public String extractBearerToken(String header) {
         if (header == null || !header.startsWith("Bearer ")) {
@@ -50,7 +62,7 @@ public class TokenUtils {
         }
     }
 
-    private JWTClaimsSet extractAllClaims(HttpServletRequest request) throws Exception {
+    public JWTClaimsSet extractAllClaims(HttpServletRequest request) throws Exception {
         String token = extractBearerToken(request.getHeader("Authorization"));
         SignedJWT signedJWT = SignedJWT.parse(token);
         if (jwtVerifier.verifyToken(token)) {

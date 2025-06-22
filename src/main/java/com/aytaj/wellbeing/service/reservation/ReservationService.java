@@ -6,19 +6,17 @@ import com.aytaj.wellbeing.dao.entity.ReservationRequestEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
-import com.aytaj.wellbeing.dao.repository.reservation.AvailableSlotRepository;
+import com.aytaj.wellbeing.dao.repository.AvailableSlotRepository;
 import com.aytaj.wellbeing.dao.repository.reservation.ReservationRequestRepository;
 import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
 import com.aytaj.wellbeing.security.TokenUtils;
 import com.aytaj.wellbeing.service.payment.PaymentService;
 import com.aytaj.wellbeing.util.enums.RequestStatus;
-import com.stripe.model.PaymentIntent;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service

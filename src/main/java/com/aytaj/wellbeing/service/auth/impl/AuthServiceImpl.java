@@ -8,6 +8,7 @@ import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.security.JwtUtil;
 import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.security.RefreshTokenService;
+import com.aytaj.wellbeing.security.TokenUtils;
 import com.aytaj.wellbeing.service.user.Impl.ClientHandler;
 import com.aytaj.wellbeing.service.user.Impl.SpecialistHandler;
 import com.aytaj.wellbeing.service.auth.AuthService;
@@ -100,23 +101,28 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse refreshToken(HttpServletRequest request) {
-        String refreshToken = getToken(request);
+//        String refreshToken = getToken(request);
+        String refreshToken = request.getHeader("Refresh-Token");
+
+        System.out.println("Refresh token: " + refreshToken);
+
         try {
             SignedJWT jwt = SignedJWT.parse(refreshToken);
             JWTClaimsSet claims = jwt.getJWTClaimsSet();
+//            JWTClaimsSet claims = tokenUtils.extractAllClaims(request);
 
             if (!"refresh".equals(claims.getStringClaim("type"))) {
                 throw new InvalidTokenException("Not a refresh token");
             }
 
-
             if (claims.getExpirationTime().before(new Date())) {
                 throw new TokenExpiredException("Refresh token expired");
             }
 
-            String email = claims.getSubject();
+            String email = claims.getStringClaim("email");
+            String userId = claims.getSubject();
 
-            String redisKey = "refresh:" + email;
+            String redisKey = "refresh:" + email + ":" + userId ;
             String tokenInRedis = redisService.get(redisKey);
             if (tokenInRedis == null || !tokenInRedis.equals(refreshToken)) {
                 throw new InvalidTokenException("Refresh token is not valid or already revoked");
@@ -125,7 +131,8 @@ public class AuthServiceImpl implements AuthService {
             LoginUser user = userService.findUserByEmail(email)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-            Map<String, Object> newClaims = Map.of("role", user.getRole().name());
+//            Map<String, Object> newClaims = Map.of("role", user.getRole().name());
+            Map<String, Object> newClaims = new HashMap<>();
             Role userRole = user.getRole();
             long accessExp = userService.getJwtExpirationByRole(userRole);
 

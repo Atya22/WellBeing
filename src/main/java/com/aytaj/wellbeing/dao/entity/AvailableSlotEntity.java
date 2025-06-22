@@ -1,8 +1,7 @@
 package com.aytaj.wellbeing.dao.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,7 +9,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "available_slot")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AvailableSlotEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +24,8 @@ public class AvailableSlotEntity {
     private BigDecimal price;
 
     private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
 
     private boolean isBooked = false;
 }
