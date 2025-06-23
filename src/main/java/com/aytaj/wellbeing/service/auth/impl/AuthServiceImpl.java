@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse refreshToken(HttpServletRequest request) {
-        String refreshToken = request.getHeader("Refresh-Token");
+        String refreshToken = refreshTokenService.extractRefreshTokenFromCookies(request);
 
         try {
             SignedJWT jwt = SignedJWT.parse(refreshToken);

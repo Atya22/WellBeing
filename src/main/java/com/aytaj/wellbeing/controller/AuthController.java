@@ -55,19 +55,11 @@ public class AuthController {
         return authService.refreshToken(request);
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logout(HttpServletRequest request) {
-//        authService.logout(request);
-//        return ResponseEntity.ok("Logout success");
-//    }
-
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        System.out.printf("hello");
         authService.logout(request, response);
         return ResponseEntity.ok("Logout successful");
     }
-
 
     @PostMapping("/login")
     public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request, HttpServletResponse response) {

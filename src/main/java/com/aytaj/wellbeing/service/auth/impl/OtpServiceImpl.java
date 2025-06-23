@@ -33,7 +33,7 @@ public class OtpServiceImpl implements OtpService {
         String subject = "Your WellBeing OTP Code";
         String body = "Hello,\n\nYour verification code is: " + otp +
                 "\nIt will expire in " + OTP_EXPIRATION_MINUTES + " minutes.";
-        emailService.sendEmail(dto.getEmail(), subject, body);
+//        emailService.sendEmail(dto.getEmail(), subject, body);
     }
 
     @Override
