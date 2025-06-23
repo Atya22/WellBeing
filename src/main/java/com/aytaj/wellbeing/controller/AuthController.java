@@ -10,6 +10,7 @@ import com.aytaj.wellbeing.service.auth.AuthService;
 import com.aytaj.wellbeing.service.auth.ClientRegistrationService;
 import com.aytaj.wellbeing.service.auth.SpecialistRegistrationService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,18 +52,25 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public TokenResponse refreshToken(HttpServletRequest request) {
-        System.out.println("Hit refresh-token endpoint");
         return authService.refreshToken(request);
     }
 
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletRequest request) {
+//        authService.logout(request);
+//        return ResponseEntity.ok("Logout success");
+//    }
+
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        authService.logout(request);
-        return ResponseEntity.ok("Logout success");
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        System.out.printf("hello");
+        authService.logout(request, response);
+        return ResponseEntity.ok("Logout successful");
     }
 
+
     @PostMapping("/login")
-    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request) {
-        return authService.login(request);
+    public TokenResponse loginUser(@Valid @RequestBody UserLoginDto request, HttpServletResponse response) {
+        return authService.login(request, response);
     }
 }

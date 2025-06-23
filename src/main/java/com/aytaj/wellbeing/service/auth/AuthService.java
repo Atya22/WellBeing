@@ -5,6 +5,7 @@ import com.aytaj.wellbeing.dto.auth.RegistrationOtpDto;
 import com.aytaj.wellbeing.dto.auth.UserLoginDto;
 import com.aytaj.wellbeing.dto.TokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
 
@@ -12,10 +13,10 @@ public interface AuthService {
 
     Boolean otpRegistrationVerification(RegisterRequest request);
 
-    TokenResponse login(UserLoginDto dto);
+    TokenResponse login(UserLoginDto dto, HttpServletResponse response);
 
     TokenResponse refreshToken(HttpServletRequest request);
 
-    void logout(HttpServletRequest request);
+    void logout(HttpServletRequest request, HttpServletResponse response);
 
 }

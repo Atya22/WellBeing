@@ -15,7 +15,8 @@ import java.util.*;
 public class JwtUtil {
     private final KeyUtil keyUtil;
 
-    public String generateToken(String email, Long id, Role role, long expirationMillis, Map<String, Object> claims) throws Exception {
+    public String generateToken(String email, Long id, Role role, long expirationMillis) throws Exception {
+        Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
         claims.put("roles", List.of(role.name()));
         JWSSigner signer = new RSASSASigner(keyUtil.loadPrivateKey());
@@ -40,7 +41,7 @@ public class JwtUtil {
     }
 
 
-    public String generateRefreshToken(String email, Long id, Role role, Long refreshTokenExpiration) throws Exception{
+    public String generateRefreshToken(String email, Long id, Role role, Long refreshTokenExpiration) throws Exception {
         JWSSigner signer = new RSASSASigner(keyUtil.loadPrivateKey());
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()

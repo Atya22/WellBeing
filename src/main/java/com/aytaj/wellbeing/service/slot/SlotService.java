@@ -7,7 +7,6 @@ import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
 import com.aytaj.wellbeing.dto.CreateSlotRequest;
 import com.aytaj.wellbeing.mapper.SlotMapper;
 import com.aytaj.wellbeing.security.TokenUtils;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

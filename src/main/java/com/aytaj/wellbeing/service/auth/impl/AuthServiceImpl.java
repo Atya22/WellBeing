@@ -8,7 +8,6 @@ import com.aytaj.wellbeing.infrastructure.RedisService;
 import com.aytaj.wellbeing.security.JwtUtil;
 import com.aytaj.wellbeing.security.PasswordUtil;
 import com.aytaj.wellbeing.security.RefreshTokenService;
-import com.aytaj.wellbeing.security.TokenUtils;
 import com.aytaj.wellbeing.service.user.Impl.ClientHandler;
 import com.aytaj.wellbeing.service.user.Impl.SpecialistHandler;
 import com.aytaj.wellbeing.service.auth.AuthService;
@@ -21,13 +20,12 @@ import com.aytaj.wellbeing.util.enums.Role;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -63,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public TokenResponse login(UserLoginDto dto) {
+    public TokenResponse login(UserLoginDto dto, HttpServletResponse response) {
         String email = dto.getEmail();
         String rawPassword = dto.getPassword();
 
@@ -76,18 +74,15 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if (passwordUtil.verifyPassword(rawPassword, user.getPassword())) {
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("role", user.getRole().name());
-
             long accessTokenExpiration = userService.getJwtExpirationByRole(user.getRole());
             long refreshTokenExpiration = Duration.ofDays(7).toMillis();
 
             try {
-                String accessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getRole(), accessTokenExpiration, claims);
+                String accessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getRole(), accessTokenExpiration);
                 String refreshToken = jwtUtil.generateRefreshToken(user.getEmail(), user.getId(), user.getRole(), refreshTokenExpiration);
 
-                redisService.set("refresh:" + user.getId(), refreshToken, refreshTokenExpiration);
-                refreshTokenService.storeRefreshToken(user.getEmail(), user.getId(), refreshToken, refreshTokenExpiration);
+                refreshTokenService.storeRefreshTokenInRedis(user.getEmail(), user.getId(), refreshToken, refreshTokenExpiration);
+                refreshTokenService.setRefreshTokenCookie(refreshToken, refreshTokenExpiration, response);
 
                 return new TokenResponse(accessToken, refreshToken);
 
@@ -101,15 +96,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenResponse refreshToken(HttpServletRequest request) {
-//        String refreshToken = getToken(request);
         String refreshToken = request.getHeader("Refresh-Token");
-
-        System.out.println("Refresh token: " + refreshToken);
 
         try {
             SignedJWT jwt = SignedJWT.parse(refreshToken);
             JWTClaimsSet claims = jwt.getJWTClaimsSet();
-//            JWTClaimsSet claims = tokenUtils.extractAllClaims(request);
 
             if (!"refresh".equals(claims.getStringClaim("type"))) {
                 throw new InvalidTokenException("Not a refresh token");
@@ -122,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
             String email = claims.getStringClaim("email");
             String userId = claims.getSubject();
 
-            String redisKey = "refresh:" + email + ":" + userId ;
+            String redisKey = "refresh:" + email + ":" + userId;
             String tokenInRedis = redisService.get(redisKey);
             if (tokenInRedis == null || !tokenInRedis.equals(refreshToken)) {
                 throw new InvalidTokenException("Refresh token is not valid or already revoked");
@@ -131,12 +122,10 @@ public class AuthServiceImpl implements AuthService {
             LoginUser user = userService.findUserByEmail(email)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-//            Map<String, Object> newClaims = Map.of("role", user.getRole().name());
-            Map<String, Object> newClaims = new HashMap<>();
             Role userRole = user.getRole();
             long accessExp = userService.getJwtExpirationByRole(userRole);
 
-            String newAccessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), userRole, accessExp, newClaims);
+            String newAccessToken = jwtUtil.generateToken(user.getEmail(), user.getId(), userRole, accessExp);
 
             return new TokenResponse(newAccessToken, refreshToken);
 
@@ -145,10 +134,9 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-
     @Override
-    public void logout(HttpServletRequest request) {
-        String refreshToken = getToken(request);
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = refreshTokenService.extractRefreshTokenFromCookies(request);
 
         try {
             SignedJWT jwt = SignedJWT.parse(refreshToken);
@@ -158,24 +146,17 @@ public class AuthServiceImpl implements AuthService {
                 throw new InvalidTokenException("Not a refresh token");
             }
 
-            String email = claims.getSubject();
-            Long userId = claims.getLongClaim("id");
+            String email = claims.getStringClaim("email");
+            long userId = Long.parseLong(claims.getSubject());
 
             String redisKey = "refresh:" + email + ":" + userId;
             redisService.delete(redisKey);
 
+            refreshTokenService.deleteRefreshTokenCookie(response);
+
         } catch (Exception e) {
             throw new RuntimeException("Invalid refresh token", e);
         }
-    }
-
-    public String getToken(HttpServletRequest request) {
-        String token = (String) request.getAttribute("token");
-
-        if (token == null) {
-            throw new InvalidTokenException("No token found in request attributes");
-        }
-        return token;
     }
 
     @SuppressWarnings("unchecked")
