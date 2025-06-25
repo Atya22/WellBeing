@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class ReservationService {
         requestEntity.setSlot(slot);
         requestEntity.setDescription(dto.getDescription());
         requestEntity.setStatus(RequestStatus.PENDING);
-
+        requestEntity.setCreatedAt(LocalDateTime.now());
         requestEntity.setPaymentIntentId(dto.getPaymentIntentId());
 
         reservationRequestRepository.save(requestEntity);

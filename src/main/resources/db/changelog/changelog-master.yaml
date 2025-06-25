@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changelog-03-add-column.yaml
   - include:
       file: db/changelog/changelog-04-rename-column.yaml
+  - include:
+      file: db/changelog/changelog-05-rename-columns.yaml

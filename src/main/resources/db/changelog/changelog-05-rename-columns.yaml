@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250625-01
+      author: aytaj
+      changes:
+        - renameColumn:
+            tableName: reservation_request
+            oldColumnName: paymentIntentId
+            newColumnName: payment_intent_id
+        - renameColumn:
+            tableName: reservation_request
+            oldColumnName: paymentCaptured
+            newColumnName: payment_captured
