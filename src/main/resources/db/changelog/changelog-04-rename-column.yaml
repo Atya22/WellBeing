@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250624-01
+      author: aytaj
+      changes:
+        - renameColumn:
+            tableName: available_slot
+            oldColumnName: endTime
+            newColumnName: end_time
+            columnDataType: TIMESTAMP

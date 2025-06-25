@@ -29,10 +29,13 @@ public class SecurityConfig {
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/logout",
                                 "/api/v1/auth/refresh-token",
-                                "/api/v1/payments/**"
+                                "/api/v1/payments/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
                         .requestMatchers(
-                                "/api/v1/specialists/slots"
+                                "/api/v1/specialists/slots/**"
                         ).hasRole("SPECIALIST")
                         .requestMatchers("/client/**").hasRole("CLIENT")
                         .anyRequest().authenticated()
@@ -45,5 +48,4 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
 }
