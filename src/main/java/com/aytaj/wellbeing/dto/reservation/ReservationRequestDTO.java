@@ -14,5 +14,4 @@ public class ReservationRequestDTO {
     private Long slotId;
     private String description;
     private String paymentIntentId;
-    private boolean paymentCaptured;
 }

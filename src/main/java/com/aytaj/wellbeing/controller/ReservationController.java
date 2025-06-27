@@ -4,6 +4,7 @@ package com.aytaj.wellbeing.controller;
 import com.aytaj.wellbeing.dao.entity.ReservationRequestEntity;
 import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
 import com.aytaj.wellbeing.service.reservation.ReservationService;
+import com.aytaj.wellbeing.service.user.SpecialistService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,9 @@ import java.util.List;
 
 public class ReservationController {
     private final ReservationService reservationService;
+    private final SpecialistService specialistService;
 
-    @PostMapping
+    @PostMapping("/create")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<?> requestSession(@RequestBody ReservationRequestDTO dto,
                                             HttpServletRequest request
@@ -35,4 +37,18 @@ public class ReservationController {
     }
 
 
+    @PostMapping("/approve/{id}")
+    @PreAuthorize("hasRole('SPECIALIST')")
+    public ResponseEntity<String> approveReservation(@PathVariable Long id) {
+        System.out.println("hello");
+        specialistService.approveReservation(id);
+        return ResponseEntity.ok("Reservation approved and payment captured.");
+    }
+
+    @PostMapping("/deny/{id}")
+    @PreAuthorize("hasRole('SPECIALIST')")
+    public ResponseEntity<String> denyReservation(@PathVariable Long id) {
+        specialistService.denyReservation(id);
+        return ResponseEntity.ok("Reservation and payment cancelled.");
+    }
 }

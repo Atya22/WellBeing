@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    //    private final JwtTokenFilter jwtTokenFilter;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -35,7 +34,9 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
                         .requestMatchers(
-                                "/api/v1/specialists/slots/**"
+                                "/api/v1/specialists/slots/**",
+                                "/api/v1/reservation/approve/**",
+                                "/api/v1/reservation/deny/**"
                         ).hasRole("SPECIALIST")
                         .requestMatchers("/client/**").hasRole("CLIENT")
                         .anyRequest().authenticated()

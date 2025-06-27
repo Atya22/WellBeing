@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface ReservationRequestRepository extends JpaRepository<ReservationRequestEntity, Long> {
     List<ReservationRequestEntity> findBySpecialistAndStatus(SpecialistEntity specialist, RequestStatus status);
+    ReservationRequestEntity findAllById(Long id);
 }

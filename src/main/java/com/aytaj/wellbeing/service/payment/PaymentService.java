@@ -35,4 +35,9 @@ public class PaymentService {
         paymentIntent.capture();
     }
 
+    public void cancelPayment (String paymentIntendId) throws Exception{
+        PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentIntendId);
+        paymentIntent.cancel();
+    }
+
 }
