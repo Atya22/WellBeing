@@ -1,8 +1,8 @@
 package com.aytaj.wellbeing.controller;
 
 
-import com.aytaj.wellbeing.dao.entity.ReservationRequestEntity;
 import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
+import com.aytaj.wellbeing.dto.reservation.ReservationResponseDto;
 import com.aytaj.wellbeing.service.reservation.ReservationService;
 import com.aytaj.wellbeing.service.user.SpecialistService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,8 +31,8 @@ public class ReservationController {
     }
 
     @GetMapping("/pending")
-    public ResponseEntity<List<ReservationRequestEntity>> getPending(HttpServletRequest request) {
-        List<ReservationRequestEntity> requests = reservationService.getPendingRequests(request);
+    public ResponseEntity<List<ReservationResponseDto>> getPending(HttpServletRequest request) {
+        List<ReservationResponseDto> requests = reservationService.getPendingRequests(request);
         return ResponseEntity.ok(requests);
     }
 
@@ -40,7 +40,6 @@ public class ReservationController {
     @PostMapping("/approve/{id}")
     @PreAuthorize("hasRole('SPECIALIST')")
     public ResponseEntity<String> approveReservation(@PathVariable Long id) {
-        System.out.println("hello");
         specialistService.approveReservation(id);
         return ResponseEntity.ok("Reservation approved and payment captured.");
     }

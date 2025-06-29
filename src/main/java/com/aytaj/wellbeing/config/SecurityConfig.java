@@ -24,14 +24,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/auth/registration/**",
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/logout",
-                                "/api/v1/auth/refresh-token",
+                                "/api/v1/auth/**",
                                 "/api/v1/payments/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/api/v1/reservation/pending"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/v1/specialists/slots/**",

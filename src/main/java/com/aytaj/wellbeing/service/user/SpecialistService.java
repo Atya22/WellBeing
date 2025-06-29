@@ -3,7 +3,7 @@ package com.aytaj.wellbeing.service.user;
 import com.aytaj.wellbeing.dao.entity.*;
 import com.aytaj.wellbeing.dao.repository.AvailableSlotRepository;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
-import com.aytaj.wellbeing.dao.repository.reservation.ReservationRequestRepository;
+import com.aytaj.wellbeing.dao.repository.ReservationRepository;
 import com.aytaj.wellbeing.dto.SpecialistDetailsDto;
 import com.aytaj.wellbeing.dto.SpecialistSearchDto;
 import com.aytaj.wellbeing.dto.SpecialistUpdateRequest;
@@ -32,7 +32,7 @@ public class SpecialistService {
     private final LanguageService languageService;
     private final TherapeuticMethodService therapeuticMethodService;
     private final TokenUtils tokenUtils;
-    private final ReservationRequestRepository reservationRequestRepository;
+    private final ReservationRepository reservationRepository;
     private final PaymentService paymentService;
     private final AvailableSlotRepository availableSlotRepository;
 
@@ -74,7 +74,7 @@ public class SpecialistService {
 
     @Transactional
     public void approveReservation(Long id) {
-        ReservationRequestEntity reservation = reservationRequestRepository.findAllById(id);
+        ReservationEntity reservation = reservationRepository.findAllById(id);
         if (!reservation.getStatus().equals(RequestStatus.PENDING)) {
             throw new IllegalStateException("Reservation already processed");
         }
@@ -90,13 +90,13 @@ public class SpecialistService {
         reservation.setStatus(RequestStatus.APPROVED);
         reservation.setPaymentCaptured(true);
         slot.setBooked(true);
-        reservationRequestRepository.save(reservation);
+        reservationRepository.save(reservation);
         availableSlotRepository.save(slot);
     }
 
     @Transactional
     public void denyReservation(Long id) {
-        ReservationRequestEntity reservation = reservationRequestRepository.findAllById(id);
+        ReservationEntity reservation = reservationRepository.findAllById(id);
 
         if (!reservation.getStatus().equals(RequestStatus.PENDING)) {
             throw new IllegalStateException("Reservation already processed");
@@ -109,6 +109,6 @@ public class SpecialistService {
             throw new RuntimeException("Payment capture failed. Cannot deny reservation.");
         }
         reservation.setStatus(RequestStatus.REJECTED);
-        reservationRequestRepository.save(reservation);
+        reservationRepository.save(reservation);
     }
 }

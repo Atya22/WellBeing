@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250628-01
+      author: aytaj
+      changes:
+        - renameTable:
+            oldTableName: reservation_request
+            newTableName: reservation

@@ -1,4 +1,4 @@
-package com.aytaj.wellbeing.dto;
+package com.aytaj.wellbeing.dto.response;
 
 import lombok.*;
 

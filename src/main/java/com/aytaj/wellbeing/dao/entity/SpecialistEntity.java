@@ -56,7 +56,7 @@ public class SpecialistEntity implements LoginUser {
 
     private Boolean approvedByModerator = false;
 
-//    approved by who?
+//    approved by whom?
 
     private LocalDate registeredAt;
 

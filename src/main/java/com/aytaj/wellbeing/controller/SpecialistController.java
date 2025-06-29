@@ -32,7 +32,7 @@ public class SpecialistController {
         return specialistService.getSpecialist(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<SpecialistDetailsDto> updateSpecialist(
             @RequestBody @Valid SpecialistUpdateRequest updateRequest,
             HttpServletRequest request

@@ -2,15 +2,16 @@ package com.aytaj.wellbeing.service.reservation;
 
 import com.aytaj.wellbeing.dao.entity.AvailableSlotEntity;
 import com.aytaj.wellbeing.dao.entity.ClientEntity;
-import com.aytaj.wellbeing.dao.entity.ReservationRequestEntity;
+import com.aytaj.wellbeing.dao.entity.ReservationEntity;
 import com.aytaj.wellbeing.dao.entity.SpecialistEntity;
 import com.aytaj.wellbeing.dao.repository.ClientRepository;
 import com.aytaj.wellbeing.dao.repository.SpecialistRepository;
 import com.aytaj.wellbeing.dao.repository.AvailableSlotRepository;
-import com.aytaj.wellbeing.dao.repository.reservation.ReservationRequestRepository;
+import com.aytaj.wellbeing.dao.repository.ReservationRepository;
 import com.aytaj.wellbeing.dto.reservation.ReservationRequestDTO;
+import com.aytaj.wellbeing.dto.reservation.ReservationResponseDto;
+import com.aytaj.wellbeing.mapper.ReservationMapper;
 import com.aytaj.wellbeing.security.TokenUtils;
-import com.aytaj.wellbeing.service.payment.PaymentService;
 import com.aytaj.wellbeing.util.enums.RequestStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +29,8 @@ public class ReservationService {
     private final ClientRepository clientRepository;
     private final SpecialistRepository specialistRepository;
     private final AvailableSlotRepository availableSlotRepository;
-    private final ReservationRequestRepository reservationRequestRepository;
-    private final PaymentService paymentService;
+    private final ReservationRepository reservationRepository;
+    private final ReservationMapper reservationMapper;
 
 
     @Transactional
@@ -46,7 +48,7 @@ public class ReservationService {
             throw new RuntimeException("Slot is already booked");
         }
 
-        ReservationRequestEntity requestEntity = new ReservationRequestEntity();
+        ReservationEntity requestEntity = new ReservationEntity();
         requestEntity.setClient(client);
         requestEntity.setSpecialist(specialist);
         requestEntity.setSlot(slot);
@@ -55,15 +57,20 @@ public class ReservationService {
         requestEntity.setCreatedAt(LocalDateTime.now());
         requestEntity.setPaymentIntentId(dto.getPaymentIntentId());
 
-        reservationRequestRepository.save(requestEntity);
+        reservationRepository.save(requestEntity);
     }
 
-    public List<ReservationRequestEntity> getPendingRequests(HttpServletRequest request) {
-        String specialistEmail = tokenUtils.extractEmail(request);
-        SpecialistEntity specialist = specialistRepository.findByEmail(specialistEmail).orElseThrow(
+    public List<ReservationResponseDto> getPendingRequests(HttpServletRequest request) {
+        Long specialistId = tokenUtils.extractId(request);
+
+        SpecialistEntity specialist = specialistRepository.findById(specialistId).orElseThrow(
                 () -> new RuntimeException("Specialist not found")
         );
-        return reservationRequestRepository.findBySpecialistAndStatus(specialist, RequestStatus.PENDING);
+
+        return reservationRepository.findBySpecialistAndStatus(specialist, RequestStatus.PENDING)
+                .stream()
+                .map(reservationMapper::entityToDtoResponse)
+                .collect(Collectors.toList());
     }
 }
 

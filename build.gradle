@@ -53,3 +53,18 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+liquibase {
+    activities {
+        main {
+            arguments = [
+                    changeLogFile: 'src/main/resources/db/changelog/changelog-master.yaml',
+                    url          : System.getenv("DB_URL"),
+                    username     : System.getenv("DB_USERNAME"),
+                    password     : System.getenv("DB_PASSWORD"),
+                    driver       : 'com.mysql.cj.jdbc.Driver'
+            ]
+        }
+    }
+    runList = 'main'
+}

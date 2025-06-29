@@ -1,11 +1,11 @@
 package com.aytaj.wellbeing.controller;
 
 
-import com.aytaj.wellbeing.dto.*;
 import com.aytaj.wellbeing.dto.auth.ClientRegistrationRequest;
 import com.aytaj.wellbeing.dto.auth.RegistrationOtpDto;
 import com.aytaj.wellbeing.dto.auth.SpecialistRegistrationRequest;
 import com.aytaj.wellbeing.dto.auth.UserLoginDto;
+import com.aytaj.wellbeing.dto.response.TokenResponse;
 import com.aytaj.wellbeing.service.auth.AuthService;
 import com.aytaj.wellbeing.service.auth.ClientRegistrationService;
 import com.aytaj.wellbeing.service.auth.SpecialistRegistrationService;

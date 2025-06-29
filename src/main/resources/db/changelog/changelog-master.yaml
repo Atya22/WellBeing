@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/changelog-04-rename-column.yaml
   - include:
       file: db/changelog/changelog-05-rename-columns.yaml
+#  - include:
+#      file: db/changelog/changelog-06-rename-reservation-table.yaml

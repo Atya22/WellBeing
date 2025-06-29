@@ -3,7 +3,7 @@ package com.aytaj.wellbeing.service.auth;
 import com.aytaj.wellbeing.dto.auth.RegisterRequest;
 import com.aytaj.wellbeing.dto.auth.RegistrationOtpDto;
 import com.aytaj.wellbeing.dto.auth.UserLoginDto;
-import com.aytaj.wellbeing.dto.TokenResponse;
+import com.aytaj.wellbeing.dto.response.TokenResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
