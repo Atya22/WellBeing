@@ -36,7 +36,8 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/api/v1/reservation/pending",
-                                "/api/v1/specialists/slots/**"
+                                "/api/v1/specialists/slots/**",
+                                "/api/v1/reservation/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

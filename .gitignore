@@ -50,3 +50,5 @@ docker-compose.yml
 
 /uploads/
 
+#stripe public key
+config.js

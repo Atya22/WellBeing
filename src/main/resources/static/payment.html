@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Stripe Test Front</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+        }
+
+        #card-element {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Book a Session</h2>
+
+<p><strong>Price:</strong> <span id="price">Loading...</span> AZN</p>
+<p><strong>Slot:</strong> <span id="slot-time">Loading...</span></p>
+
+<form id="payment-form">
+    <div id="card-element"></div>
+    <button type="submit">Pay</button>
+</form>
+
+<div id="result"></div>
+
+<script src="config.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    const stripe = Stripe(STRIPE_PUBLIC_KEY);
+
+    const paymentForm = document.getElementById("payment-form");
+    const resultDiv = document.getElementById("result");
+    const priceSpan = document.getElementById("price");
+    const slotTimeSpan = document.getElementById("slot-time");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const slotId = urlParams.get('Id');
+
+    console.log("Slot ID from URL:", slotId);
+
+    if (!slotId) {
+        resultDiv.innerText = "Missing slotId in URL";
+        throw new Error("Missing slotId");
+    }
+
+    let specialistId = null;
+    let amount = 0;
+
+    async function loadSlotDetails() {
+        try {
+            const response = await fetch(`http://localhost:8081/api/v1/specialists/slots/${slotId}`);
+            if (!response.ok) throw new Error("Failed to load slot");
+
+            const slotData = await response.json();
+
+            console.log("Slot data from backend:", slotData);
+
+            specialistId = slotData.specialistId;
+            amount = slotData.price * 100; // Convert to smallest currency unit (e.g., qapiks for AZN)
+
+            priceSpan.innerText = slotData.price;
+
+            const start = new Date(slotData.startTime);
+            const end = new Date(slotData.endTime);
+
+            const day = start.toLocaleDateString('en-US', {weekday: 'long'});
+            const startTimeFormatted = start.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+            const endTimeFormatted = end.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+
+            slotTimeSpan.innerText = `${day} ${startTimeFormatted} – ${endTimeFormatted}`;
+        } catch (err) {
+            resultDiv.innerText = "Error loading slot: " + err.message;
+        }
+    }
+
+    loadSlotDetails();
+
+    let elements = stripe.elements();
+    let cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    paymentForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // 1. Create PaymentIntent
+        const paymentResponse = await fetch(`http://localhost:8081/api/v1/payments/create?amount=${amount}`, {
+            method: "POST"
+        });
+
+        const paymentData = await paymentResponse.json();
+        const clientSecret = paymentData.clientSecret;
+        const paymentIntentId = paymentData.paymentIntentId;
+
+        if (!clientSecret) {
+            resultDiv.innerText = "Error: " + paymentData.error;
+            return;
+        }
+
+        // 2. Confirm the card payment
+        const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: cardElement
+            }
+        });
+
+        if (error) {
+            resultDiv.innerText = "Card confirmation error: " + error.message;
+            return;
+        }
+
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (paymentIntent.status === "requires_capture") {
+            resultDiv.innerText = "Payment successful, sending reservation request...";
+
+            // 3. Send reservation request
+
+            const reservationResponse = await fetch("http://localhost:8081/api/v1/reservation/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + accessToken
+                },
+                body: JSON.stringify({
+                    specialistId: specialistId,
+                    slotId: parseInt(slotId),
+                    description: "I want to work on anxiety",
+                    paymentIntentId: paymentIntentId
+                })
+            });
+            console.log("Reservation response status:", reservationResponse.status);
+            console.log("Reservation response headers:", reservationResponse.headers);
+            const resError = await reservationResponse.text();
+            console.log("Reservation error (if any):", resError);
+
+            if (reservationResponse.ok) {
+                resultDiv.innerText = "Reservation successfully created!";
+            } else {
+                const resError = await reservationResponse.text();
+                resultDiv.innerText = "Reservation error: " + resError;
+            }
+        } else {
+            resultDiv.innerText = "Payment was not successful.";
+        }
+    });
+</script>
+
+</body>
+</html>
