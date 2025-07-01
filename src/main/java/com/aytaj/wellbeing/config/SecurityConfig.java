@@ -24,19 +24,20 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/api/v1/specialists/slots/create",
+                                "/api/v1/reservation/approve/**",
+                                "/api/v1/reservation/deny/**"
+                        ).hasRole("SPECIALIST")
+                        .requestMatchers("/client/**").hasRole("CLIENT")
+                        .requestMatchers(
                                 "/api/v1/auth/**",
                                 "/api/v1/payments/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/api/v1/reservation/pending"
+                                "/api/v1/reservation/pending",
+                                "/api/v1/specialists/slots/**"
                         ).permitAll()
-                        .requestMatchers(
-                                "/api/v1/specialists/slots/**",
-                                "/api/v1/reservation/approve/**",
-                                "/api/v1/reservation/deny/**"
-                        ).hasRole("SPECIALIST")
-                        .requestMatchers("/client/**").hasRole("CLIENT")
                         .anyRequest().authenticated()
                 )
 

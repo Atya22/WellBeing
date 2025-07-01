@@ -20,4 +20,9 @@ private final SlotService slotService;
                                         @RequestBody CreateSlotRequest createSlotRequest){
     return ResponseEntity.ok(slotService.createSlot(servletRequest, createSlotRequest));
 }
+
+@GetMapping("/{id}")
+    public ResponseEntity<?> getSlot(@PathVariable Long id){
+    return  ResponseEntity.ok(slotService.getSlot(id));
+}
 }
